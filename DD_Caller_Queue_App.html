@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dealership & Dragons - Caller Mission Control</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: #f9fafb;
+      color: #1f2937;
+    }
+
+    header {
+      background: #1F2937;
+      color: white;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+
+    .header-text h1 {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .header-text p {
+      font-size: 13px;
+      color: #d1d5db;
+      margin: 2px 0 0 0;
+    }
+
+    .header-right a {
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 8px 12px;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.1);
+      transition: background 0.2s;
+    }
+
+    .header-right a:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      padding: 16px 24px;
+      background: white;
+      border-bottom: 1px solid #e5e7eb;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      padding: 10px 16px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      color: #6b7280;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+      position: relative;
+      white-space: nowrap;
+    }
+
+    .tab-btn.active {
+      color: #1D4ED8;
+      border-bottom-color: #1D4ED8;
+    }
+
+    .tab-btn:hover {
+      color: #1f2937;
+    }
+
+    .tab-count {
+      display: inline-block;
+      background: #1D4ED8;
+      color: white;
+      padding: 2px 6px;
+      border-radius: 12px;
+      font-size: 12px;
+      margin-left: 6px;
+      font-weight: 700;
+    }
+
+    .filter-bar {
+      padding: 12px 24px;
+      background: white;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 8px 12px;
+      border: 1px solid #d1d5db;
+      background: white;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.2s;
+    }
+
+    .filter-btn.active {
+      background: #1D4ED8;
+      color: white;
+      border-color: #1D4ED8;
+    }
+
+    .filter-btn:hover:not(.active) {
+      border-color: #9ca3af;
+    }
+
+    .container {
+      padding: 24px;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding-bottom: 24px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 8px;
+      border-left: 4px solid #9ca3af;
+      padding: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      transition: all 0.2s;
+    }
+
+    .card:hover {
+      box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+    }
+
+    .card.available {
+      border-left-color: #60A5FA;
+    }
+
+    .card.claimed {
+      border-left-color: #0891B2;
+      background: #f0fdff;
+    }
+
+    .card.done {
+      border-left-color: #9CA3AF;
+      background: #f9fafb;
+      opacity: 0.7;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+      gap: 8px;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1f2937;
+      flex: 1;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .badge-available {
+      background: #DBEAFE;
+      color: #1E40AF;
+    }
+
+    .badge-claimed {
+      background: #CFFAFE;
+      color: #155E75;
+    }
+
+    .badge-done {
+      background: #F3F4F6;
+      color: #6B7280;
+    }
+
+    .badge-appt {
+      background: #DBEAFE;
+      color: #1E40AF;
+      font-size: 10px;
+      margin-left: 4px;
+    }
+
+    .card-body {
+      font-size: 13px;
+      line-height: 1.5;
+      color: #4b5563;
+      margin-bottom: 12px;
+    }
+
+    .card-questions {
+      background: #f3f4f6;
+      padding: 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      color: #374151;
+      margin-bottom: 12px;
+      font-style: italic;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: #1D4ED8;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #1E40AF;
+    }
+
+    .btn-secondary {
+      background: #e5e7eb;
+      color: #374151;
+    }
+
+    .btn-secondary:hover {
+      background: #d1d5db;
+    }
+
+    .card.done .btn {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .feedback-btns {
+      display: flex;
+      gap: 8px;
+      justify-content: space-around;
+      padding-top: 8px;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    .feedback-btn {
+      flex: 1;
+      padding: 6px;
+      border: 1px solid #d1d5db;
+      background: white;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 18px;
+      transition: all 0.2s;
+    }
+
+    .feedback-btn:hover {
+      border-color: #9ca3af;
+    }
+
+    .feedback-btn.thumbs-up {
+      border-color: #22C55E;
+      background: #f0fdf4;
+    }
+
+    .feedback-btn.fist {
+      border-color: #EAB308;
+      background: #fffbeb;
+    }
+
+    .feedback-btn.thumbs-down {
+      border-color: #EF4444;
+      background: #fef2f2;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 48px 24px;
+      color: #9ca3af;
+    }
+
+    .empty-state p {
+      font-size: 16px;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 8px;
+      max-width: 700px;
+      max-height: 80vh;
+      overflow-y: auto;
+      padding: 24px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    }
+
+    .modal-header {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: #1f2937;
+    }
+
+    .modal-section {
+      margin-bottom: 20px;
+    }
+
+    .modal-section h3 {
+      font-size: 13px;
+      font-weight: 600;
+      color: #6b7280;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .stat {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .stat:last-child {
+      border-bottom: none;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: #6b7280;
+    }
+
+    .stat-value {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1f2937;
+    }
+
+    .completed-list {
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .completed-item {
+      padding: 10px;
+      background: #f9fafb;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      font-size: 12px;
+    }
+
+    .completed-item-title {
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 4px;
+    }
+
+    .completed-item-feedback {
+      color: #6b7280;
+    }
+
+    .close-btn {
+      float: right;
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: #6b7280;
+    }
+
+    .close-btn:hover {
+      color: #1f2937;
+    }
+
+    .traffic-strip {
+      display: flex;
+      align-items: center;
+      padding: 8px 24px;
+      background: #1F2937;
+      border-bottom: 1px solid #374151;
+      gap: 12px;
+    }
+
+    .traffic-light {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #111827;
+      padding: 6px 12px;
+      border-radius: 20px;
+    }
+
+    .light {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 2px solid #374151;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .light-green {
+      background: #1a3a1a;
+    }
+
+    .light-yellow {
+      background: #3a3a1a;
+    }
+
+    .light-red {
+      background: #3a1a1a;
+    }
+
+    .light-green.on {
+      background: #22C55E;
+      box-shadow: 0 0 12px #22C55E, 0 0 24px rgba(34,197,94,0.4);
+      border-color: #22C55E;
+    }
+
+    .light-yellow.on {
+      background: #EAB308;
+      box-shadow: 0 0 12px #EAB308, 0 0 24px rgba(234,179,8,0.4);
+      border-color: #EAB308;
+    }
+
+    .light-red.on {
+      background: #EF4444;
+      box-shadow: 0 0 12px #EF4444, 0 0 24px rgba(239,68,68,0.4);
+      border-color: #EF4444;
+    }
+
+    .traffic-msg {
+      color: white;
+      font-size: 15px;
+      font-weight: 700;
+      flex: 1;
+    }
+
+    .traffic-mode {
+      font-size: 11px;
+      color: #9ca3af;
+      background: #374151;
+      padding: 4px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      border: none;
+      font-weight: 600;
+    }
+
+    .traffic-mode:hover {
+      background: #4b5563;
+    }
+
+    .directions-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+    }
+
+    .directions-overlay.active {
+      display: flex;
+    }
+
+    .directions-content {
+      background: white;
+      border-radius: 8px;
+      padding: 32px 40px;
+      max-width: 500px;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    }
+
+    .directions-content h2 {
+      font-size: 28px;
+      margin-bottom: 16px;
+      color: #1f2937;
+    }
+
+    .directions-content p {
+      font-size: 16px;
+      line-height: 1.6;
+      color: #4b5563;
+      margin-bottom: 24px;
+    }
+
+    .directions-btn {
+      padding: 12px 24px;
+      background: #1D4ED8;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .directions-btn:hover {
+      background: #1E40AF;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <div class="header-text">
+      <h1>Fred Anderson Toyota of Cape Coral</h1>
+      <p>Dealership &amp; Dragons - Showroom Simulation</p>
+    </div>
+  </div>
+  <div class="header-right">
+    <a href="#" onclick="app.openDashboard(); return false;">Admin</a>
+  </div>
+</header>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="app.switchTab('inbound')">
+    Inbound Calls
+    <span class="tab-count" id="inbound-count">0</span>
+  </button>
+  <button class="tab-btn" onclick="app.switchTab('internet')">
+    Internet Leads
+    <span class="tab-count" id="internet-count">0</span>
+  </button>
+  <button class="tab-btn" onclick="app.switchTab('receptionist')">
+    Receptionist
+    <span class="tab-count" id="receptionist-count">0</span>
+  </button>
+</div>
+
+<div class="filter-bar">
+  <button class="filter-btn active" onclick="app.switchFilter('all')">All</button>
+  <button class="filter-btn" onclick="app.switchFilter('available')">Available</button>
+  <button class="filter-btn" onclick="app.switchFilter('claimed')">Claimed</button>
+  <button class="filter-btn" onclick="app.switchFilter('done')">Done</button>
+</div>
+
+<div class="traffic-strip" id="traffic-strip">
+  <div class="traffic-light">
+    <div class="light light-green on" id="light-green" onclick="app.setPacing('green')"></div>
+    <div class="light light-yellow" id="light-yellow" onclick="app.setPacing('yellow')"></div>
+    <div class="light light-red" id="light-red" onclick="app.setPacing('red')"></div>
+  </div>
+  <div class="traffic-msg" id="traffic-msg">Go - Claim your calls!</div>
+  <button class="traffic-mode" id="traffic-mode" onclick="app.toggleAutoMode()">AUTO</button>
+</div>
+
+<div class="container">
+  <div class="grid" id="grid"></div>
+  <div class="empty-state" id="empty" style="display: none;">
+    <p>No calls in this view. Good work!</p>
+  </div>
+</div>
+
+
+<div class="modal" id="dashboard">
+  <div class="modal-content">
+    <button class="close-btn" onclick="app.closeDashboard()">x</button>
+    <div class="modal-header">Dashboard (Code: dd2026)</div>
+
+    <div class="modal-section">
+      <h3>Stats</h3>
+      <div class="stat">
+        <span class="stat-label">Claimed</span>
+        <span class="stat-value" id="stat-claimed">0</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Done</span>
+        <span class="stat-value" id="stat-done">0</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Thumbs Up</span>
+        <span class="stat-value" id="stat-thumbs-up">0</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Fist</span>
+        <span class="stat-value" id="stat-fist">0</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Thumbs Down</span>
+        <span class="stat-value" id="stat-thumbs-down">0</span>
+      </div>
+    </div>
+
+    <div class="modal-section">
+      <h3>Pacing</h3>
+      <p style="font-size: 13px; color: #6b7280;">Traffic light auto-detects claim speed. Click any light to override (switches to MANUAL). Click AUTO to resume.</p>
+    </div>
+
+    <div class="modal-section">
+      <h3>Completed Calls</h3>
+      <div class="completed-list" id="completed-list"></div>
+    </div>
+  </div>
+</div>
+
+<div class="directions-overlay" id="directions">
+  <div class="directions-content">
+    <h2>How to Play</h2>
+    <p>Pick a tab. Claim a card. Read the scenario and suggested questions. Make the call or submit the lead. If you have a trade-in, feel free to use your real vehicle as an example! Mark done when finished. Leave feedback with thumbs.</p>
+    <button class="directions-btn" onclick="app.closeDirections()">Got It!</button>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  app.init();
+});
+
+var app = {
+  currentTab: 'inbound',
+  currentFilter: 'all',
+  cards: [],
+  completed: [],
+  pacingState: 'green',
+  autoMode: true,
+  claimTimes: [],
+
+  init: function() {
+    this.generateCards();
+    this.shuffle(this.cards);
+    this.render();
+    this.showDirections();
+  },
+
+  generateCards: function() {
+    var inbound = [
+      { tab: 'inbound', title: 'Calling about the 2026 4Runner SR5 (Stk#T5093240)', desc: 'Saw vehicle online. Wants to know if still available and pricing information.', questions: 'Ask: "Is it still on the lot?" or "What is the out-the-door price?"', appt: true },
+      { tab: 'inbound', title: 'Interested in the 2026 Tundra Limited (Stk#TX389462)', desc: 'Found it on website. Wants to confirm availability and schedule test drive.', questions: 'Ask: "Is it still available?" or "When can I come see it?"', appt: true },
+      { tab: 'inbound', title: 'Calling about the 2024 Camry SE (Stk#RU885652P)', desc: 'Saw on website. Wants to know condition and service history.', questions: 'Ask: "How many miles does it have?" or "Does it have a clean title?"', appt: true },
+      { tab: 'inbound', title: 'Interested in the 2025 RAV4 Hybrid XLE (Stk#SU165728P)', desc: 'Found online. Wants fuel economy details. Has 2020 Honda Civic to trade.', questions: 'Ask: "What is the MPG rating?" or "What is my trade worth?"', appt: true },
+      { tab: 'inbound', title: 'Calling about the 2026 4Runner TRD Sport Premium (Stk#T5009769)', desc: 'Off-road enthusiast saw it online. Wants off-road capability details.', questions: 'Ask: "What off-road features does it have?" or "Can I test drive it?"', appt: false },
+      { tab: 'inbound', title: 'Interested in the 2025 RAV4 LE (Stk#SC315122P)', desc: 'Saw online. Wants weekend test drive. Has 2021 Subaru Outback to trade.', questions: 'Ask: "Are you available Saturday?" or "What is my trade-in worth?"', appt: false },
+      { tab: 'inbound', title: 'Calling about the 2024 Honda CR-V Hybrid (Stk#RL034798P)', desc: 'Saw listing. Wants to know about reliability and warranty.', questions: 'Ask: "How does Honda compare to Toyota?" or "What is the warranty?"', appt: false },
+      { tab: 'inbound', title: 'Interested in the 2026 RAV4 Woodland (Stk#TW003580)', desc: 'Outdoor enthusiast found online. Wants all-terrain capabilities.', questions: 'Ask: "Does it have all-terrain tires?" or "What is ground clearance?"', appt: false },
+      { tab: 'inbound', title: 'Calling about the 2024 Tacoma SR (Stk#RT006213P)', desc: 'Needs truck for work. Wants towing and payload specs.', questions: 'Ask: "What is towing capacity?" or "What is payload rating?"', appt: false },
+      { tab: 'inbound', title: 'Interested in the 2022 Sienna Platinum (Stk#NEC82360P)', desc: 'Large family needs spacious van. Saw it online.', questions: 'Ask: "Can it fit three car seats?" or "What is cargo space?"', appt: true },
+    ];
+
+    var inbound2 = [
+      { tab: 'inbound', title: 'Calling about the 2023 Camry (Stk#PU098974P)', desc: 'Budget buyer. Saw used sedan online. Wants best price.', questions: 'Ask: "What is the mileage?" or "Is there warranty remaining?"', appt: false },
+      { tab: 'inbound', title: 'Interested in the 2022 Tacoma SR5 (Stk#NM187973P)', desc: 'Used truck buyer. Saw online. Wants service records.', questions: 'Ask: "Does it have full service history?" or "Any accidents on record?"', appt: false },
+      { tab: 'inbound', title: 'Calling about the 2023 Hyundai Palisade (Stk#PU607483P)', desc: 'Considering brand switch. Saw it listed. Wants details.', questions: 'Ask: "What is the warranty?" or "What are safety features?"', appt: false },
+      { tab: 'inbound', title: 'Interested in the 2024 Camry SE (Stk#TS294883A)', desc: 'Saw online. Wants to know if it is still available.', questions: 'Ask: "Is it still available?" or "What is the final price?"', appt: true },
+      { tab: 'inbound', title: 'Calling about the 2025 Corolla (Stk#TB002089B)', desc: 'College student. Wants affordable reliable transportation.', questions: 'Ask: "Do you have financing for recent grads?" or "What is monthly payment?"', appt: false },
+      { tab: 'inbound', title: 'Interested in the 2024 Tundra (Stk#TL009984A)', desc: 'Work truck buyer. Wants towing capacity information.', questions: 'Ask: "What is max towing?" or "Can I tow a 5000 lb boat?"', appt: false },
+      { tab: 'inbound', title: 'Calling about the 2025 Camry LE (Stk#SX042668P)', desc: 'Current Camry owner wants upgrade. Saw online. Trade-in question.', questions: 'Ask: "What is my trade worth?" or "What is upgrade cost?"', appt: false },
+      { tab: 'inbound', title: 'Interested in the 2023 RAV4 XLE (Stk#PR045821P)', desc: 'Wants safety ratings. Saw on website.', questions: 'Ask: "What safety score?" or "Does it have lane departure warning?"', appt: false },
+      { tab: 'inbound', title: 'Calling about the 2024 Highlander XLE (Stk#RH067432P)', desc: 'Family of five wants three-row SUV. Saw online.', questions: 'Ask: "Does it have third row?" or "What is seating capacity?"', appt: false },
+      { tab: 'inbound', title: 'What are payments on the 2025 Tacoma TRD Sport (Stk#ST098765P)', desc: 'Interested in specific truck. Wants payment information.', questions: 'Ask: "What would monthly payment be?" or "What is APR rate?"', appt: false },
+    ];
+
+    var inbound3 = [
+      { tab: 'inbound', title: 'Calling about the 2023 Corolla SE (Stk#PC034567P)', desc: 'Budget buyer. Saw used Corolla online. Wants best price.', questions: 'Ask: "What is mileage?" or "Any warranty left?"', appt: true },
+      { tab: 'inbound', title: 'Interested in the 2024 Camry XSE (Stk#RC078912P)', desc: 'Wants luxury features on Camry. Saw listing.', questions: 'Ask: "Does it have leather?" or "What upgrades included?"', appt: false },
+      { tab: 'inbound', title: 'Calling about the 2026 4Runner SR5 (Stk#T5093240)', desc: 'Wants to know pricing. Is it still available?', questions: 'Ask: "What is the price?" or "Can I come see it this weekend?"', appt: true },
+      { tab: 'inbound', title: 'Interested in the 2025 Camry LE (Stk#SX042668P)', desc: 'Eco-conscious buyer. Wants fuel economy info on Camry.', questions: 'Ask: "What is fuel economy?" or "How much gas savings?"', appt: false },
+      { tab: 'inbound', title: 'Asking about payment options on the 2024 RAV4 LE (Stk#SC315122P)', desc: 'Wants to know financing options and rates.', questions: 'Ask: "What are your APR rates?" or "What credit score required?"', appt: false },
+      { tab: 'inbound', title: 'Interested in leasing a 2026 RAV4 Woodland (Stk#TW003580)', desc: 'First-time leaser. Wants monthly payment and terms.', questions: 'Ask: "What is monthly lease?" or "What mileage allowance?"', appt: false },
+      { tab: 'inbound', title: 'Calling about the 2026 Tundra Limited (Stk#TX389462)', desc: 'Wants detailed info on new truck. Considering purchase.', questions: 'Ask: "What is the price?" or "Can I test drive it today?"', appt: true },
+      { tab: 'inbound', title: 'Interested in trading their 2020 Honda Civic for the 2025 RAV4 Hybrid XLE (Stk#SU165728P)', desc: 'Has 2020 Honda Civic. Wants quick appraisal and upgrade info.', questions: 'Ask: "What year/condition is Civic?" or "Can you value it today?"', appt: false },
+      { tab: 'inbound', title: 'Calling about trading up to newer 2024 Tacoma (Stk#RT006213P)', desc: 'Current truck owner. Wants to upgrade to newer model.', questions: 'Ask: "What is my trade worth?" or "What is upgrade cost?"', appt: false },
+      { tab: 'inbound', title: 'Interested in the 2022 Highlander Limited (Stk#NH054321P)', desc: 'Has growing family. Needs larger SUV with third row.', questions: 'Ask: "What is my Odyssey worth?" or "What three-row SUVs available?"', appt: false },
+    ];
+
+    var inbound4 = [
+      { tab: 'inbound', title: 'Calling about availability of 2023 RAV4 XLE (Stk#PR045821P)', desc: 'Comparing used RAV4s. Wants specifics on this one.', questions: 'Ask: "Is it still available?" or "When can I come see it?"', appt: true },
+      { tab: 'inbound', title: 'Interested in 2026 Tundra Limited (Stk#TX389462) lease options', desc: 'Wants to lease new truck. Asking about terms.', questions: 'Ask: "What is monthly lease?" or "What mileage limit?"', appt: true },
+      { tab: 'inbound', title: 'Calling about out-the-door price on 2024 Camry SE (Stk#RU885652P)', desc: 'Wants final price with all fees and taxes included.', questions: 'Ask: "What is out-the-door price?" or "Are there hidden fees?"', appt: false },
+      { tab: 'inbound', title: 'Interested in the 2025 RAV4 Hybrid XLE (Stk#SU165728P)', desc: 'Has 2019 Honda CR-V. Wants to trade for RAV4 Hybrid.', questions: 'Ask: "What is my trade worth?" or "Can you appraise today?"', appt: true },
+      { tab: 'inbound', title: 'Calling about the 2026 4Runner TRD Sport Premium (Stk#T5009769)', desc: 'Wants to compare to Chevrolet Tahoe. Interested in capabilities.', questions: 'Ask: "What is towing capacity?" or "Is it good for off-roading?"', appt: false },
+      { tab: 'inbound', title: 'Responding to 2024 Camry SE (Stk#RU885652P) mailer', desc: 'Received promotional mailer about this specific vehicle. Deal valid?', questions: 'Ask: "Is the mailer special still active?" or "Can I come this week?"', appt: true },
+      { tab: 'inbound', title: 'Calling about 2025 Tacoma TRD Sport (Stk#ST098765P) mailer promotion', desc: 'Got mailer about this truck. Wants details on special offer.', questions: 'Ask: "What are exact terms?" or "When does it expire?"', appt: true },
+      { tab: 'inbound', title: 'Calling about the 2024 Highlander XLE (Stk#RH067432P)', desc: 'Saw it online. Wants to know if still available and price.', questions: 'Ask: "Is it still available?" or "What is your best price?" Mention you have a 2019 Honda Pilot to trade.', appt: true },
+      { tab: 'inbound', title: 'Calling about the 2025 Tundra SR5 (Stk#ST112233P)', desc: 'Saw it online. Needs a truck for towing a boat.', questions: 'Ask: "Is it still available?" or "What is towing capacity?" Mention you have a 2018 Ford F-150 to trade.', appt: true },
+      { tab: 'inbound', title: 'Calling about the 2023 RAV4 XLE (Stk#PR045821P)', desc: 'Found it online. Wants to know mileage and condition.', questions: 'Ask: "Is it still on the lot?" or "How many miles does it have?"', appt: false },
+    ];
+
+    var inbound5 = [
+      { tab: 'inbound', title: 'Interested in leasing the 2025 Corolla (Stk#TB002089B)', desc: 'Wants to lease new Corolla. Asking monthly cost.', questions: 'Ask: "What is monthly lease?" or "What down payment needed?"', appt: true },
+      { tab: 'inbound', title: 'Calling about the 2023 RAV4 XLE (Stk#PR045821P) - CPO program', desc: 'Wants quality assurance on used car. Asking about CPO warranty.', questions: 'Ask: "What is CPO certification?" or "What warranty included?"', appt: true },
+      { tab: 'inbound', title: 'Interested in the 2026 4Runner TRD Sport Premium (Stk#T5009769)', desc: 'Wants to know pricing and financing. Brand new vehicle.', questions: 'Ask: "What is the price?" or "Can I come see it?"', appt: false },
+      { tab: 'inbound', title: 'Calling about payment plan on the 2024 Camry SE (Stk#TS294883A)', desc: 'Interested in specific vehicle. Wants financing details.', questions: 'Ask: "What are your APR rates?" or "What down payment needed?"', appt: false },
+      { tab: 'inbound', title: 'Interested in trading 2018 Honda Accord for 2026 Tundra Limited (Stk#TX389462)', desc: 'Has 2018 Accord. Wants quick appraisal on trade-in value.', questions: 'Mention you have 2018 Honda Accord to trade. Ask what it is worth.', appt: true },
+      { tab: 'inbound', title: 'Calling about the 2025 Tundra SR5 (Stk#ST112233P)', desc: 'Wants truck for work. Needs towing and payload info.', questions: 'Ask: "What is towing capacity?" or "What is payload rating?"', appt: false },
+      { tab: 'inbound', title: 'Interested in the 2024 Honda CR-V Hybrid (Stk#RL034798P)', desc: 'Comparing to RAV4 Hybrid. Wants details on this CR-V.', questions: 'Ask: "How does it compare to RAV4?" or "What is fuel economy?"', appt: true },
+      { tab: 'inbound', title: 'Calling about the 2024 Highlander XLE (Stk#RH067432P)', desc: 'Family of 6 needs spacious three-row SUV.', questions: 'Ask: "Can you fit six adults?" or "What is cargo space?"', appt: true },
+      { tab: 'inbound', title: 'Interested in the 2022 Sienna Platinum (Stk#NEC82360P)', desc: 'Parent looking for safe family van. Saw it online.', questions: 'Ask: "What safety features?" or "Can you install car seats?"', appt: true },
+      { tab: 'inbound', title: 'Calling about the 2023 Corolla SE (Stk#PC034567P)', desc: 'Budget buyer. Wants reliable used car at good price.', questions: 'Ask: "What is the mileage?" or "Does it have maintenance records?"', appt: false },
+    ];
+
+    var internet = [
+      { tab: 'internet', title: 'Sarah M.', desc: 'Message: "Is the 2026 4Runner SR5 (Stk#T5093240) still available?"', questions: 'I have a 2018 Toyota RAV4 to trade.', appt: true },
+      { tab: 'internet', title: 'James L.', desc: 'Message: "What is the out-the-door price on the 2024 Camry SE (Stk#RU885652P)?"', questions: 'Ask about financing. Want to keep payments under $400/month.', appt: false },
+      { tab: 'internet', title: 'Michelle T.', desc: 'Message: "Do you have the 2026 Tundra Limited (Stk#TX389462) in white?"', questions: 'I need good towing capacity for my boat.', appt: false },
+      { tab: 'internet', title: 'David P.', desc: 'Message: "Can you tell me more about the 2025 RAV4 Hybrid XLE (Stk#SU165728P)?"', questions: 'What is fuel economy? I want to save on gas.', appt: true },
+      { tab: 'internet', title: 'Jennifer R.', desc: 'Message: "We have 3 kids. Do you have the 2024 Highlander XLE (Stk#RH067432P) in stock?"', questions: 'We have a 2020 Honda Odyssey to trade. What is it worth?', appt: false },
+      { tab: 'internet', title: 'Robert K.', desc: 'Message: "Is the 2023 RAV4 XLE (Stk#PR045821P) still available?"', questions: 'I have a 2019 Toyota Camry to trade. What is it worth?', appt: true },
+      { tab: 'internet', title: 'Angela M.', desc: 'Message: "What is monthly payment on the 2025 Corolla (Stk#TB002089B) lease?"', questions: 'First-time leaser. Want to lease for 3 years. What down payment?', appt: false },
+      { tab: 'internet', title: 'Christopher D.', desc: 'Message: "Do you have the 2024 Tundra (Stk#TL009984A) in stock?"', questions: 'I have a 2018 Ford F-150 to trade. Can we discuss trade-in?', appt: false },
+      { tab: 'internet', title: 'Lisa H.', desc: 'Message: "Do you have the 2022 Highlander Limited (Stk#NH054321P)?"', questions: 'Family of 5. What are safety ratings on this model?', appt: false },
+      { tab: 'internet', title: 'Michael J.', desc: 'Message: "Tell me about the 2026 4Runner TRD Sport Premium (Stk#T5009769)."', questions: 'I want off-road capabilities. What is the towing capacity?', appt: true },
+      { tab: 'internet', title: 'Patricia S.', desc: 'Message: "What is the price on the 2025 RAV4 Hybrid XLE (Stk#SU165728P)?"', questions: 'I have a 2017 Chevy Equinox to trade.', appt: false },
+      { tab: 'internet', title: 'Kevin W.', desc: 'Message: "Can I finance the 2024 Camry SE (Stk#TS294883A) with fair credit?"', questions: 'I want a car but worried about loan approval.', appt: false },
+    ];
+
+    var internet2 = [
+      { tab: 'internet', title: 'Amanda B.', desc: 'Message: "Is the 2026 4Runner SR5 (Stk#T5093240) available this weekend?"', questions: 'I have 2021 Subaru Outback to trade. Can I come Saturday morning?', appt: true },
+      { tab: 'internet', title: 'Mark T.', desc: 'Message: "What is the price on the 2022 Sienna Platinum (Stk#NEC82360P)?"', questions: 'I need spacious family van for 4 young kids.', appt: false },
+      { tab: 'internet', title: 'Rachel G.', desc: 'Message: "What is the monthly lease on the 2026 RAV4 Woodland (Stk#TW003580)?"', questions: 'First-time leaser. What is down payment? What mileage allowance?', appt: false },
+      { tab: 'internet', title: 'Steven L.', desc: 'Message: "What is my 2020 Tacoma worth as a trade-in for a 2024 Tacoma (Stk#RT006213P)?"', questions: 'Want to upgrade to newer Tacoma with better features.', appt: false },
+      { tab: 'internet', title: 'Emily R.', desc: 'Message: "Do you have the 2025 RAV4 Hybrid XLE (Stk#SU165728P) in stock?"', questions: 'I care about gas mileage and the environment.', appt: true },
+      { tab: 'internet', title: 'Jason M.', desc: 'Message: "Can I complete purchase online for the 2024 Camry SE (Stk#RU885652P)?"', questions: 'I prefer not to come in. Can we do this remotely?', appt: false },
+      { tab: 'internet', title: 'Nicole H.', desc: 'Message: "What is out-the-door price on the 2024 Camry SE (Stk#TS294883A)?"', questions: 'Include all fees and taxes. I want to know final price.', appt: false },
+      { tab: 'internet', title: 'Thomas C.', desc: 'Message: "Tell me about the 2025 Tundra SR5 (Stk#ST112233P)."', questions: 'I need truck for towing. What is towing capacity?', appt: false },
+      { tab: 'internet', title: 'Karen J.', desc: 'Message: "Can you appraise my 2019 Honda CR-V for trade on 2025 RAV4 Hybrid XLE (Stk#SU165728P)?"', questions: 'What is it worth? I want to trade it in.', appt: false },
+      { tab: 'internet', title: 'Brian P.', desc: 'Message: "Do you offer fleet pricing for the 2026 4Runner (Stk#T5093240)?"', questions: 'We need 5-10 vehicles for our company. What discount?', appt: false },
+      { tab: 'internet', title: 'Donna K.', desc: 'Message: "Can I finance the 2025 Corolla (Stk#TB002089B) with bad credit?"', questions: 'My credit is not perfect. Can you help me get approved?', appt: false },
+      { tab: 'internet', title: 'Gary S.', desc: 'Message: "What is included in the 2024 Highlander XLE (Stk#RH067432P) purchase?"', questions: 'Tell me about warranty and what maintenance is included.', appt: false },
+    ];
+
+    var internet3 = [
+      { tab: 'internet', title: 'Susan A.', desc: 'Message: "Do you have CPO vehicles? What about the 2023 RAV4 XLE (Stk#PR045821P)?"', questions: 'What warranty is on certified pre-owned?', appt: false },
+      { tab: 'internet', title: 'Edward L.', desc: 'Message: "Can you deliver the 2026 Tundra Limited (Stk#TX389462)?"', questions: 'I live in Utah. Can you arrange delivery to my home?', appt: false },
+      { tab: 'internet', title: 'Victoria C.', desc: 'Message: "What is the best price on the 2024 Camry XSE (Stk#RC078912P)?"', questions: 'I want the most features. What upgrades come standard?', appt: false },
+      { tab: 'internet', title: 'Frank M.', desc: 'Message: "Is the 2025 RAV4 LE (Stk#SC315122P) available for test drive?"', questions: 'Can I test drive Saturday afternoon?', appt: false },
+      { tab: 'internet', title: 'Grace T.', desc: 'Message: "Do you have the 2022 Tacoma SR5 (Stk#NM187973P) with low miles?"', questions: 'I want a used truck with good condition. What is mileage?', appt: false },
+      { tab: 'internet', title: 'Harold D.', desc: 'Message: "What financing APR on the 2024 Camry SE (Stk#RU885652P)?"', questions: 'What is your best rate? Can I get under 3 percent?', appt: false },
+      { tab: 'internet', title: 'Iris P.', desc: 'Message: "Tell me about the 2023 Hyundai Palisade (Stk#PU607483P)."', questions: 'Is this reliable? What is warranty on used?', appt: false },
+      { tab: 'internet', title: 'Jack R.', desc: 'Message: "Do you have the 2026 4Runner TRD Sport Premium (Stk#T5009769) available?"', questions: 'I want to see in person. Can I come this week?', appt: false },
+      { tab: 'internet', title: 'Karen M.', desc: 'Message: "What is monthly payment on the 2025 Camry LE (Stk#SX042668P)?"', questions: 'I want to finance for 72 months. What is the rate?', appt: false },
+      { tab: 'internet', title: 'Louis F.', desc: 'Message: "Do you have the 2024 Honda CR-V Hybrid (Stk#RL034798P) in stock?"', questions: 'I want fuel efficient SUV. What is actual MPG?', appt: false },
+      { tab: 'internet', title: 'Martha H.', desc: 'Message: "Can I see the 2026 RAV4 Woodland (Stk#TW003580) on Saturday?"', questions: 'I want outdoor vehicle. What are towing options?', appt: false },
+      { tab: 'internet', title: 'Norman K.', desc: 'Message: "What is the best deal on the 2023 Corolla SE (Stk#PC034567P)?"', questions: 'Budget buyer. Want reliable used car at good price.', appt: false },
+    ];
+
+    var internet4 = [
+      { tab: 'internet', title: 'Oscar W.', desc: 'Message: "Do you deliver the 2025 RAV4 Hybrid XLE (Stk#SU165728P)?"', questions: 'I live out of state. Can you arrange delivery?', appt: true },
+      { tab: 'internet', title: 'Patricia L.', desc: 'Message: "What is your best financing rate on the 2024 Tundra (Stk#TL009984A)?"', questions: 'I want to know APR and monthly payment.', appt: false },
+      { tab: 'internet', title: 'Quentin B.', desc: 'Message: "Is the 2026 4Runner SR5 (Stk#T5093240) available in black?"', questions: 'I prefer black exterior. Do you have this?', appt: false },
+      { tab: 'internet', title: 'Rachel S.', desc: 'Message: "Can you finance me for the 2025 Corolla (Stk#TB002089B)?"', questions: 'My credit is less than 650. Can I still get approved?', appt: true },
+      { tab: 'internet', title: 'Samuel D.', desc: 'Message: "What is towing capacity on the 2025 Tundra SR5 (Stk#ST112233P)?"', questions: 'I need to tow 8000 lbs. Is this truck capable?', appt: true },
+      { tab: 'internet', title: 'Teresa M.', desc: 'Message: "Do you have warranty on the 2023 RAV4 XLE (Stk#PR045821P)?"', questions: 'What warranty comes with used vehicle?', appt: false },
+      { tab: 'internet', title: 'Ulysses J.', desc: 'Message: "Tell me about the 2024 Camry XSE (Stk#RC078912P)."', questions: 'What luxury features come standard?', appt: true },
+      { tab: 'internet', title: 'Victoria G.', desc: 'Message: "Can I test drive the 2026 Tundra Limited (Stk#TX389462) today?"', questions: 'I am ready to buy today. Can I come now?', appt: true },
+      { tab: 'internet', title: 'Walter T.', desc: 'Message: "What is the safety rating on the 2024 Highlander XLE (Stk#RH067432P)?"', questions: 'Family safety is important. What scores does it have?', appt: true },
+      { tab: 'internet', title: 'Ximena R.', desc: 'Message: "Do you have the 2022 Sienna Platinum (Stk#NEC82360P) with low mileage?"', questions: 'I want van for family. What is mileage?', appt: false },
+      { tab: 'internet', title: 'Yolanda P.', desc: 'Message: "What are the specs on the 2025 RAV4 LE (Stk#SC315122P)?"', questions: 'Send me full specifications and features.', appt: true },
+      { tab: 'internet', title: 'Zachary M.', desc: 'Message: "Can you hold the 2024 Camry SE (Stk#RU885652P) for me?"', questions: 'I want to buy but can come next week. Can you hold it?', appt: false },
+    ];
+
+    var internet5 = [
+      { tab: 'internet', title: 'Andrea K.', desc: 'Message: "Is the 2026 4Runner TRD Sport Premium (Stk#T5009769) in stock?"', questions: 'I want to come see it this weekend.', appt: true },
+      { tab: 'internet', title: 'Brandon H.', desc: 'Message: "What is trade-in value for my 2017 Honda Civic?"', questions: 'I want to upgrade to the 2025 RAV4 Hybrid XLE (Stk#SU165728P).', appt: true },
+      { tab: 'internet', title: 'Cameron T.', desc: 'Message: "Do you lease the 2026 RAV4 Woodland (Stk#TW003580)?"', questions: 'What is monthly lease payment? What down payment?', appt: false },
+      { tab: 'internet', title: 'Diana J.', desc: 'Message: "Can you finance the 2024 Camry SE (Stk#TS294883A) with bad credit?"', questions: 'My credit is not perfect. What options do you have?', appt: true },
+      { tab: 'internet', title: 'Ethan P.', desc: 'Message: "What is the best price on the 2025 Tundra SR5 (Stk#ST112233P)?"', questions: 'I want to negotiate. What is your lowest price?', appt: true },
+      { tab: 'internet', title: 'Fiona M.', desc: 'Message: "Does the 2023 Hyundai Palisade (Stk#PU607483P) have good reviews?"', questions: 'What do people say about this vehicle? Is it reliable?', appt: false },
+      { tab: 'internet', title: 'Gregory D.', desc: 'Message: "Can I see the 2024 Honda CR-V Hybrid (Stk#RL034798P) on Sunday?"', questions: 'I only have weekends free. What time works?', appt: true },
+      { tab: 'internet', title: 'Hannah R.', desc: 'Message: "What features come with the 2023 Camry (Stk#PU098974P)?"', questions: 'What technology package does it have?', appt: true },
+      { tab: 'internet', title: 'Isaac T.', desc: 'Message: "Do you have the 2022 Tacoma SR5 (Stk#NM187973P) available?"', questions: 'I want used truck with service records.', appt: true },
+      { tab: 'internet', title: 'Julia S.', desc: 'Message: "What warranty is on the 2024 Camry XSE (Stk#RC078912P)?"', questions: 'What is coverage period and mileage limit?', appt: false },
+      { tab: 'internet', title: 'Kevin B.', desc: 'Message: "Is the 2026 Tundra Limited (Stk#TX389462) good for towing?"', questions: 'I need truck for pulling trailer. What is towing?', appt: true },
+      { tab: 'internet', title: 'Lori C.', desc: 'Message: "What is the price on the 2025 Corolla (Stk#TB002089B)?"', questions: 'College student. Want affordable car with good warranty.', appt: false },
+    ];
+
+    var receptionist = [
+      { tab: 'receptionist', title: 'Customer wants to discuss 2026 4Runner SR5 (Stk#T5093240)', desc: 'Caller asking about features. Ready to talk with sales.', questions: 'Ask for sales representative. Caller interested in 4Runner.', appt: false },
+      { tab: 'receptionist', title: 'Asking for Carlos Tamayo about 2024 Camry SE (Stk#RU885652P)', desc: 'Wants to speak with specific salesperson about Camry.', questions: 'Transfer to Carlos Tamayo. This is about specific vehicle.', appt: false },
+      { tab: 'receptionist', title: 'Customer wants financing help for 2025 RAV4 Hybrid XLE (Stk#SU165728P)', desc: 'Needs financing consultation for hybrid RAV4.', questions: 'Ask for finance manager. Caller wants to finance this vehicle.', appt: false },
+      { tab: 'receptionist', title: 'Interested in leasing 2026 Tundra Limited (Stk#TX389462)', desc: 'Wants to discuss lease terms for new truck.', questions: 'Ask for finance manager. Caller wants to lease this truck.', appt: false },
+      { tab: 'receptionist', title: 'Oil change appointment request', desc: 'Routine service maintenance. Needs to schedule oil change.', questions: 'Transfer to service department. Schedule maintenance.', appt: false },
+      { tab: 'receptionist', title: 'Brake service inquiry for their vehicle', desc: 'Needs brake inspection and service work.', questions: 'Transfer to service department. Schedule brake service.', appt: false },
+      { tab: 'receptionist', title: 'Customer wants to speak with Alex Coolen about 2025 Camry LE (Stk#SX042668P)', desc: 'Repeat customer. Wants specific salesperson.', questions: 'Transfer to Alex Coolen. Caller asks about this Camry.', appt: false },
+      { tab: 'receptionist', title: 'Calling to ask about business financing for fleet 2026 4Runner (Stk#T5093240)', desc: 'Small business owner. Wants to purchase multiple vehicles.', questions: 'Ask for business manager. Caller wants fleet financing.', appt: false },
+ 
+      { tab: 'receptionist', title: 'Viscera service appointment', desc: 'Vehicle viscera fluid needs service. Schedule appointment.', questions: 'Transfer to service department. Schedule viscera service.', appt: false },
+   ];
+
+    var receptionist2 = [
+      { tab: 'receptionist', title: 'Service inquiry: tire rotation and alignment', desc: 'Routine maintenance. Wants to schedule tire service.', questions: 'Transfer to service department. Schedule tire service.', appt: false },
+      { tab: 'receptionist', title: 'Asking for Will Thermidor about 2026 RAV4 Woodland (Stk#TW003580)', desc: 'Wants to work with specific salesperson on RAV4.', questions: 'Transfer to Will Thermidor. Caller interested in this RAV4.', appt: false },
+      { tab: 'receptionist', title: 'Battery replacement service request', desc: 'Car battery needs replacement. Schedule service.', questions: 'Transfer to service department. Schedule battery replacement.', appt: false },
+      { tab: 'receptionist', title: 'Customer wants info on business lease for 2024 Tundra (Stk#TL009984A)', desc: 'Company owner. Wants to lease truck for business use.', questions: 'Ask for business manager. Caller wants lease for business.', appt: false },
+      { tab: 'receptionist', title: 'Transmission issue service call', desc: 'Vehicle has transmission problem. Needs service appointment.', questions: 'Transfer to service department. Schedule transmission check.', appt: false },
+      { tab: 'receptionist', title: 'Asking for Christian Odio about 2024 Camry XSE (Stk#RC078912P)', desc: 'Previous customer. Wants to speak with previous salesperson.', questions: 'Transfer to Christian Odio. This is follow-up on Camry.', appt: false },
+      { tab: 'receptionist', title: 'Warranty inquiry for 2023 RAV4 XLE (Stk#PR045821P)', desc: 'Wants to discuss warranty coverage on used vehicle.', questions: 'Ask for finance manager. Caller wants warranty info.', appt: false },
+      { tab: 'receptionist', title: 'Customer asking about business fleet pricing for RAV4', desc: 'Business needs 3-5 vehicles for company use.', questions: 'Ask for business manager. Caller wants fleet pricing.', appt: false },
+ 
+      { tab: 'receptionist', title: 'Asking for Damian Flores about 2026 4Runner (Stk#T5093240)', desc: 'Wants specific salesperson for 4Runner discussion.', questions: 'Transfer to Damian Flores. Caller interested in 4Runner.', appt: false },
+   ];
+
+    var receptionist3 = [
+      { tab: 'receptionist', title: 'Coolant flush service appointment', desc: 'Vehicle maintenance. Schedule coolant flush service.', questions: 'Transfer to service department. Schedule coolant service.', appt: false },
+      { tab: 'receptionist', title: 'Asking for Nick Plank about 2025 RAV4 LE (Stk#SC315122P)', desc: 'Wants to discuss vehicle with specific salesperson.', questions: 'Transfer to Nick Plank. Caller interested in this RAV4.', appt: false },
+      { tab: 'receptionist', title: 'Brakes pad replacement service', desc: 'Vehicle brakes need service. Schedule appointment.', questions: 'Transfer to service department. Schedule brake pads.', appt: false },
+      { tab: 'receptionist', title: 'Customer wants finance approval info for 2026 Tundra (Stk#TX389462)', desc: 'Wants to know about financing this truck.', questions: 'Ask for finance manager. Caller wants financing discussion.', appt: false },
+      { tab: 'receptionist', title: 'Asking for Kojak McKown about 2024 Honda CR-V Hybrid (Stk#RL034798P)', desc: 'Follow-up call. Wants to speak with previous salesperson.', questions: 'Transfer to Kojak McKown. About the Honda CR-V.', appt: false },
+      { tab: 'receptionist', title: 'Scheduled maintenance check-up', desc: 'Vehicle needs regular scheduled maintenance service.', questions: 'Transfer to service department. Schedule maintenance.', appt: false },
+      { tab: 'receptionist', title: 'Transmission fluid change service', desc: 'Routine transmission service needed. Schedule appointment.', questions: 'Transfer to service department. Schedule transmission fluid.', appt: false },
+      { tab: 'receptionist', title: 'Customer interested in commercial lease for business truck', desc: 'Wants to lease vehicles for business operations.', questions: 'Ask for business manager. Caller needs business lease.', appt: false },
+ 
+      { tab: 'receptionist', title: 'Fuel filter replacement service', desc: 'Fuel filter needs replacement. Schedule service.', questions: 'Transfer to service department. Schedule fuel filter service.', appt: false },
+   ];
+
+    var receptionist4 = [
+      { tab: 'receptionist', title: 'Engine air filter replacement service', desc: 'Air filter needs replacement. Schedule service.', questions: 'Transfer to service department. Schedule filter replacement.', appt: false },
+      { tab: 'receptionist', title: 'Asking for Bailey Hilt about 2025 Camry LE (Stk#SX042668P)', desc: 'Wants to work with specific salesperson on Camry.', questions: 'Transfer to Bailey Hilt. Caller interested in Camry.', appt: false },
+      { tab: 'receptionist', title: 'Suspension and alignment service', desc: 'Vehicle needs suspension work. Schedule appointment.', questions: 'Transfer to service department. Schedule suspension service.', appt: false },
+      { tab: 'receptionist', title: 'Customer wants leasing info on 2026 4Runner (Stk#T5093240)', desc: 'Interested in leasing this specific vehicle.', questions: 'Ask for finance manager. Caller wants lease for 4Runner.', appt: false },
+      { tab: 'receptionist', title: 'Asking for D\'Marcus Anthony about 2022 Sienna Platinum (Stk#NEC82360P)', desc: 'Wants to discuss van with specific salesperson.', questions: 'Transfer to D\'Marcus Anthony. About the Sienna van.', appt: false },
+      { tab: 'receptionist', title: 'Cabin air filter and pollen filter service', desc: 'Interior air filter needs replacement. Schedule service.', questions: 'Transfer to service department. Schedule filter service.', appt: false },
+      { tab: 'receptionist', title: 'Radiator service appointment', desc: 'Vehicle radiator needs service. Schedule appointment.', questions: 'Transfer to service department. Schedule radiator service.', appt: false },
+      { tab: 'receptionist', title: 'Customer asking business purchase options for 2024 Tacoma (Stk#RT006213P)', desc: 'Business owner wants to buy truck for company.', questions: 'Ask for business manager. Caller wants business purchase.', appt: false },
+ 
+      { tab: 'receptionist', title: 'Asking for Sean Rowland about 2025 RAV4 (Stk#SC315122P)', desc: 'Wants to speak with this specific salesperson.', questions: 'Transfer to Sean Rowland. Caller interested in RAV4.', appt: false },
+   ];
+
+    var receptionist5 = [
+      { tab: 'receptionist', title: 'Spark plug replacement service', desc: 'Engine spark plugs need replacement. Schedule service.', questions: 'Transfer to service department. Schedule plug replacement.', appt: false },
+      { tab: 'receptionist', title: 'Asking for Jody Scharping about 2024 Camry SE (Stk#TS294883A)', desc: 'Previous customer. Wants to speak with salesperson.', questions: 'Transfer to Jody Scharping. About the Camry.', appt: false },
+      { tab: 'receptionist', title: 'Windshield wiper blade replacement', desc: 'Wiper blades need replacement. Schedule service.', questions: 'Transfer to service department. Schedule wiper service.', appt: false },
+      { tab: 'receptionist', title: 'Customer wants company lease info for vehicles', desc: 'Business wants to lease fleet of vehicles.', questions: 'Ask for business manager. Caller needs business lease options.', appt: false },
+      { tab: 'receptionist', title: 'Asking for Mario Aguilera about 2026 RAV4 Woodland (Stk#TW003580)', desc: 'Wants specific salesperson to discuss RAV4.', questions: 'Transfer to Mario Aguilera. Caller interested in RAV4.', appt: false },
+      { tab: 'receptionist', title: 'Strut and shock replacement service', desc: 'Suspension struts need replacement. Schedule service.', questions: 'Transfer to service department. Schedule strut service.', appt: false },
+      { tab: 'receptionist', title: 'Wheel balance and rotation service', desc: 'Wheels need balancing and rotation. Schedule appointment.', questions: 'Transfer to service department. Schedule wheel service.', appt: false },
+      { tab: 'receptionist', title: 'Customer asking about wholesale/fleet pricing for multiple 4Runners', desc: 'Wants to purchase multiple vehicles at volume discount.', questions: 'Ask for business manager. Caller wants wholesale pricing.', appt: false },
+ 
+      { tab: 'receptionist', title: 'AC and heating system service', desc: 'Vehicle climate control needs service. Schedule appointment.', questions: 'Transfer to service department. Schedule climate service.', appt: false },
+   ];
+
+    var receptionist6 = [
+      { tab: 'receptionist', title: 'Hose and belt inspection service', desc: 'Vehicle hoses and belts need inspection. Schedule service.', questions: 'Transfer to service department. Schedule hose belt service.', appt: false },
+      { tab: 'receptionist', title: 'Asking for Miguel Medina about 2025 RAV4 Hybrid XLE (Stk#SU165728P)', desc: 'Wants to work with specific salesperson on hybrid.', questions: 'Transfer to Miguel Medina. Caller interested in RAV4 Hybrid.', appt: false },
+      { tab: 'receptionist', title: 'Power steering fluid service', desc: 'Power steering system needs service. Schedule appointment.', questions: 'Transfer to service department. Schedule steering service.', appt: false },
+      { tab: 'receptionist', title: 'Customer wants to lease multiple 2026 RAV4s (Stk#TW003580)', desc: 'Corporate customer. Wants to lease vehicles.', questions: 'Ask for business manager. Caller wants corporate lease.', appt: false },
+      { tab: 'receptionist', title: 'Asking for Zak Banwart about 2025 Corolla (Stk#TB002089B)', desc: 'Customer wants to discuss Corolla with salesperson.', questions: 'Transfer to Zak Banwart. About the Corolla.', appt: false },
+      { tab: 'receptionist', title: 'Antifreeze and coolant service', desc: 'Coolant system needs service. Schedule appointment.', questions: 'Transfer to service department. Schedule coolant service.', appt: false },
+      { tab: 'receptionist', title: 'Transmission service appointment', desc: 'Transmission needs regular service. Schedule appointment.', questions: 'Transfer to service department. Schedule transmission service.', appt: false },
+      { tab: 'receptionist', title: 'Customer asking about bulk purchasing vehicles for business', desc: 'Business needs multiple vehicles. Volume pricing inquiry.', questions: 'Ask for business manager. Caller wants bulk purchasing terms.', appt: false },
+ 
+      { tab: 'receptionist', title: 'Asking for Jeff Princile about 2024 Camry (Stk#RU885652P)', desc: 'Customer wants to work with specific salesperson.', questions: 'Transfer to Jeff Princile. About the Camry.', appt: false },
+   ];
+
+    var receptionist7 = [
+      { tab: 'receptionist', title: 'Differential service appointment', desc: 'Differential fluid needs service. Schedule appointment.', questions: 'Transfer to service department. Schedule differential service.', appt: false },
+      { tab: 'receptionist', title: 'Asking for Alain Pino about 2024 Highlander XLE (Stk#RH067432P)', desc: 'Wants specific salesperson to discuss Highlander.', questions: 'Transfer to Alain Pino. Caller interested in Highlander.', appt: false },
+      { tab: 'receptionist', title: 'Exhaust system inspection service', desc: 'Exhaust system needs inspection. Schedule service.', questions: 'Transfer to service department. Schedule exhaust service.', appt: false },
+      { tab: 'receptionist', title: 'Customer interested in business fleet agreement', desc: 'Corporate account wants fleet management agreement.', questions: 'Ask for business manager. Caller wants fleet agreement.', appt: false },
+      { tab: 'receptionist', title: 'Asking for Kelly Floyd about 2023 Hyundai Palisade (Stk#PU607483P)', desc: 'Customer wants to discuss Palisade with salesperson.', questions: 'Transfer to Kelly Floyd. About the Hyundai Palisade.', appt: false },
+      { tab: 'receptionist', title: 'Factory recall service notice', desc: 'Vehicle has recall notice. Schedule service appointment.', questions: 'Transfer to service department. Schedule recall service.', appt: false },
+      { tab: 'receptionist', title: 'Battery and electrical system check', desc: 'Electrical system needs diagnostic. Schedule service.', questions: 'Transfer to service department. Schedule electrical check.', appt: false },
+      { tab: 'receptionist', title: 'Customer asking about dealership financing for business purchase', desc: 'Business owner wants dealership to finance fleet purchase.', questions: 'Ask for finance manager. Caller wants business financing.', appt: false },
+ 
+      { tab: 'receptionist', title: 'Asking for Jayden Hodges about 2026 4Runner SR5 (Stk#T5093240)', desc: 'Customer wants this specific salesperson for 4Runner.', questions: 'Transfer to Jayden Hodges. About the 4Runner SR5.', appt: false },
+      { tab: 'receptionist', title: 'Seat and upholstery cleaning service', desc: 'Vehicle seats need cleaning. Schedule service.', questions: 'Transfer to service department. Schedule upholstery cleaning.', appt: false },
+      { tab: 'receptionist', title: 'Stereo and electronics repair service', desc: 'Vehicle audio/electronic system needs repair. Schedule service.', questions: 'Transfer to service department. Schedule electronics service.', appt: false },
+   ];
+
+    
+    this.cards = inbound.concat(inbound2, inbound3, inbound4, inbound5, internet, internet2, internet3, internet4, internet5, receptionist, receptionist2, receptionist3, receptionist4, receptionist5, receptionist6, receptionist7);
+  },
+
+  shuffle: function(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
+    }
+  },
+
+  switchTab: function(tab) {
+    this.currentTab = tab;
+    this.currentFilter = 'all';
+    var tabs = document.querySelectorAll('.tab-btn');
+    var tabNames = ['inbound', 'internet', 'receptionist'];
+    for (var i = 0; i < tabs.length; i++) {
+      tabs[i].classList.remove('active');
+      if (tabNames[i] === tab) {
+        tabs[i].classList.add('active');
+      }
+    }
+    var filters = document.querySelectorAll('.filter-btn');
+    for (var j = 0; j < filters.length; j++) {
+      filters[j].classList.remove('active');
+    }
+    if (filters.length > 0) { filters[0].classList.add('active'); }
+    this.render();
+  },
+
+  switchFilter: function(filter) {
+    this.currentFilter = filter;
+    var filterNames = ['all', 'available', 'claimed', 'done'];
+    var btns = document.querySelectorAll('.filter-btn');
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].classList.remove('active');
+      if (filterNames[i] === filter) {
+        btns[i].classList.add('active');
+      }
+    }
+    this.render();
+  },
+
+  render: function() {
+    var grid = document.getElementById('grid');
+    var empty = document.getElementById('empty');
+    grid.innerHTML = '';
+
+    var filtered = this.cards.filter(function(card) {
+      if (card.tab !== app.currentTab) return false;
+      if (app.currentFilter === 'all') return true;
+      var status = card.status || 'available';
+      return status === app.currentFilter;
+    });
+
+    if (filtered.length === 0) {
+      grid.style.display = 'none';
+      empty.style.display = 'block';
+      return;
+    }
+
+    grid.style.display = 'grid';
+    empty.style.display = 'none';
+
+    filtered.forEach(function(card) {
+      var realIdx = app.cards.indexOf(card);
+      var div = document.createElement('div');
+      div.className = 'card ' + (card.status || 'available');
+
+      var status = card.status || 'available';
+      var badge = { available: 'available', claimed: 'claimed', done: 'done' }[status];
+
+      var apptTag = card.appt ? '<span class="badge badge-appt">(Set appt)</span>' : '';
+
+      var actionBtn = '';
+      if (status === 'available') {
+        actionBtn = '<button class="btn btn-primary" onclick="app.claimCard(' + realIdx + ')">Claim</button>';
+      } else if (status === 'claimed') {
+        actionBtn = '<button class="btn btn-primary" onclick="app.markDone(' + realIdx + ')">Mark Done</button>';
+      }
+
+      var feedbackHtml = '';
+      if (status === 'done') {
+        var upClass = card.feedback === 'up' ? ' selected-positive' : '';
+        var fistClass = card.feedback === 'fist' ? ' selected-neutral' : '';
+        var downClass = card.feedback === 'down' ? ' selected-negative' : '';
+        feedbackHtml =
+          '<div class="feedback-btns">' +
+            '<button class="feedback-btn thumbs-up' + upClass + '" onclick="app.setFeedback(' + realIdx + ', \'up\')" title="Thumbs Up">&#128077;</button>' +
+            '<button class="feedback-btn fist' + fistClass + '" onclick="app.setFeedback(' + realIdx + ', \'fist\')" title="Fist">&#128074;</button>' +
+            '<button class="feedback-btn thumbs-down' + downClass + '" onclick="app.setFeedback(' + realIdx + ', \'down\')" title="Thumbs Down">&#128078;</button>' +
+          '</div>';
+      }
+
+      div.innerHTML =
+        '<div class="card-header">' +
+          '<div class="card-title">' + card.title + apptTag + '</div>' +
+          '<span class="badge badge-' + badge + '">' + status.charAt(0).toUpperCase() + status.slice(1) + '</span>' +
+        '</div>' +
+        '<div class="card-body">' + card.desc + '</div>' +
+        '<div class="card-questions">' + card.questions + '</div>' +
+        '<div class="card-actions">' +
+          actionBtn +
+        '</div>' +
+        feedbackHtml;
+
+      grid.appendChild(div);
+    });
+
+    this.updateCounts();
+  },
+
+  claimCard: function(idx) {
+    this.cards[idx].status = 'claimed';
+    this.claimTimes.push(Date.now());
+    if (this.autoMode) { this.autoUpdatePacing(); }
+    this.render();
+  },
+
+  markDone: function(idx) {
+    this.cards[idx].status = 'done';
+    this.completed.push({
+      title: this.cards[idx].title,
+      feedback: this.cards[idx].feedback || 'None'
+    });
+    this.render();
+  },
+
+  setFeedback: function(idx, type) {
+    this.cards[idx].feedback = type;
+    this.render();
+  },
+
+  updateCounts: function() {
+    var tabs = { inbound: 0, internet: 0, receptionist: 0 };
+    this.cards.forEach(function(card) {
+      if (card.tab && card.status !== 'done') {
+        tabs[card.tab]++;
+      }
+    });
+    document.getElementById('inbound-count').textContent = tabs.inbound;
+    document.getElementById('internet-count').textContent = tabs.internet;
+    document.getElementById('receptionist-count').textContent = tabs.receptionist;
+  },
+
+  openDashboard: function() {
+    this.updateStats();
+    document.getElementById('dashboard').classList.add('active');
+  },
+
+  closeDashboard: function() {
+    document.getElementById('dashboard').classList.remove('active');
+  },
+
+  updateStats: function() {
+    var claimed = this.cards.filter(function(c) { return c.status === 'claimed'; }).length;
+    var done = this.cards.filter(function(c) { return c.status === 'done'; }).length;
+    var up = this.cards.filter(function(c) { return c.feedback === 'up'; }).length;
+    var fist = this.cards.filter(function(c) { return c.feedback === 'fist'; }).length;
+    var down = this.cards.filter(function(c) { return c.feedback === 'down'; }).length;
+
+    document.getElementById('stat-claimed').textContent = claimed;
+    document.getElementById('stat-done').textContent = done;
+    document.getElementById('stat-thumbs-up').textContent = up;
+    document.getElementById('stat-fist').textContent = fist;
+    document.getElementById('stat-thumbs-down').textContent = down;
+
+    var list = document.getElementById('completed-list');
+    list.innerHTML = '';
+    this.completed.forEach(function(item) {
+      var div = document.createElement('div');
+      div.className = 'completed-item';
+      var feedbackText = { up: 'Thumbs Up', fist: 'Fist', down: 'Thumbs Down', None: 'No Feedback' }[item.feedback] || 'No Feedback';
+      div.innerHTML = '<div class="completed-item-title">' + item.title + '</div><div class="completed-item-feedback">Feedback: ' + feedbackText + '</div>';
+      list.appendChild(div);
+    });
+  },
+
+  setPacing: function(state) {
+    this.pacingState = state;
+    this.autoMode = false;
+    document.getElementById('traffic-mode').textContent = 'MANUAL';
+    this.updateTrafficLight();
+  },
+
+  toggleAutoMode: function() {
+    this.autoMode = !this.autoMode;
+    var btn = document.getElementById('traffic-mode');
+    if (this.autoMode) {
+      btn.textContent = 'AUTO';
+      this.autoUpdatePacing();
+    } else {
+      btn.textContent = 'MANUAL';
+    }
+  },
+
+  autoUpdatePacing: function() {
+    var now = Date.now();
+    var window30 = now - 30000;
+    var recent = this.claimTimes.filter(function(t) { return t > window30; });
+    var count = recent.length;
+    if (count >= 8) {
+      this.pacingState = 'red';
+    } else if (count >= 4) {
+      this.pacingState = 'yellow';
+    } else {
+      this.pacingState = 'green';
+    }
+    this.updateTrafficLight();
+  },
+
+  updateTrafficLight: function() {
+    var g = document.getElementById('light-green');
+    var y = document.getElementById('light-yellow');
+    var r = document.getElementById('light-red');
+    var msg = document.getElementById('traffic-msg');
+    g.classList.remove('on');
+    y.classList.remove('on');
+    r.classList.remove('on');
+    if (this.pacingState === 'green') {
+      g.classList.add('on');
+      msg.textContent = 'Go - Claim your calls!';
+    } else if (this.pacingState === 'yellow') {
+      y.classList.add('on');
+      msg.textContent = 'Slow down - Wait 1-2 minutes before calling';
+    } else if (this.pacingState === 'red') {
+      r.classList.add('on');
+      msg.textContent = 'Pause - Too many active calls';
+    }
+  },
+
+  showDirections: function() {
+    document.getElementById('directions').classList.add('active');
+  },
+
+  closeDirections: function() {
+    document.getElementById('directions').classList.remove('active');
+  }
+};
+</script>
+
+</body>
+</html>
