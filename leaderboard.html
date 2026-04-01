@@ -12,7 +12,6 @@
             color: #1e293b;
             min-height: 100vh;
         }
-
         header {
             background: #1f2937;
             color: #fff;
@@ -23,28 +22,22 @@
         }
         header h1 { font-size: 18px; font-weight: 700; }
         header p { font-size: 12px; color: #94a3b8; margin-top: 2px; }
-        .back-link {
-            color: #60a5fa;
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 500;
-        }
+        .back-link { color: #60a5fa; text-decoration: none; font-size: 13px; font-weight: 500; }
         .back-link:hover { color: #93c5fd; }
-
         .container { max-width: 1100px; margin: 0 auto; padding: 20px 16px; }
 
-        /* ââ Podium ââ */
+        /* --- Podium --- */
         .podium-wrap {
             display: flex;
             justify-content: center;
             align-items: flex-end;
-            gap: 12px;
+            gap: 10px;
             margin-bottom: 20px;
-            padding: 0 40px;
+            padding: 0 20px;
         }
         .podium-card {
             flex: 1;
-            max-width: 220px;
+            max-width: 200px;
             text-align: center;
             border-radius: 12px;
             overflow: hidden;
@@ -53,76 +46,70 @@
         }
         .podium-card:hover { transform: translateY(-2px); }
         .podium-card .top {
-            padding: 16px 12px 12px;
             color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
         }
-        .podium-card .top .rank {
-            font-size: 28px;
-            font-weight: 800;
-            opacity: 0.9;
-            line-height: 1;
-        }
-        .podium-card .top .team-name {
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 6px;
-        }
+        .podium-card .top .rank { font-weight: 800; opacity: 0.9; line-height: 1; }
+        .podium-card .top .team-name { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; }
         .podium-card .score-area {
             background: #fff;
-            padding: 10px 12px;
+            padding: 8px 10px;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             justify-content: center;
         }
         .podium-card .score-area input {
-            width: 60px;
+            width: 52px;
             border: 1px solid #d1d5db;
             border-radius: 6px;
-            padding: 5px 4px;
-            font-size: 13px;
+            padding: 4px;
+            font-size: 12px;
             text-align: center;
             font-family: inherit;
         }
-        .podium-card .score-area input:focus {
-            outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 2px #3b82f633;
-        }
+        .podium-card .score-area input:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 2px #3b82f633; }
         .podium-card .score-area button {
             background: #2563eb;
             color: #fff;
             border: none;
             border-radius: 6px;
-            padding: 5px 10px;
-            font-size: 12px;
+            padding: 4px 9px;
+            font-size: 11px;
             font-weight: 600;
             cursor: pointer;
             font-family: inherit;
         }
         .podium-card .score-area button:hover { background: #1d4ed8; }
-        .podium-card .big-score {
-            font-size: 32px;
-            font-weight: 800;
-            color: #1e293b;
-            padding: 8px 0;
-            background: #fff;
-        }
+        .podium-card .big-score { font-weight: 800; color: #1e293b; background: #fff; }
 
-        .p-gold .top { background: linear-gradient(135deg, #d97706, #f59e0b); }
-        .p-silver .top { background: linear-gradient(135deg, #475569, #64748b); }
-        .p-bronze .top { background: linear-gradient(135deg, #9a3412, #ea580c); }
+        /* Rank colors */
+        .rank-1 .top { background: linear-gradient(135deg, #d97706, #f59e0b); }
+        .rank-2 .top { background: linear-gradient(135deg, #475569, #64748b); }
+        .rank-3 .top { background: linear-gradient(135deg, #9a3412, #ea580c); }
+        .rank-4 .top { background: linear-gradient(135deg, #1e40af, #3b82f6); }
 
-        .p-gold { order: 2; }
-        .p-silver { order: 1; }
-        .p-bronze { order: 3; }
+        /* Dynamic sizing per rank */
+        .rank-1 .top { padding: 28px 10px 18px; }
+        .rank-1 .top .rank { font-size: 30px; }
+        .rank-1 .big-score { font-size: 34px; padding: 10px 0; }
 
-        .p-gold .top { padding-top: 24px; padding-bottom: 20px; }
-        .p-silver .top, .p-bronze .top { padding-top: 14px; padding-bottom: 14px; }
+        .rank-2 .top { padding: 20px 10px 14px; }
+        .rank-2 .top .rank { font-size: 24px; }
+        .rank-2 .big-score { font-size: 28px; padding: 8px 0; }
 
-        /* ââ Salespeople Section ââ */
+        .rank-3 .top { padding: 14px 10px 10px; }
+        .rank-3 .top .rank { font-size: 20px; }
+        .rank-3 .big-score { font-size: 24px; padding: 6px 0; }
+
+        .rank-4 .top { padding: 10px 10px 8px; }
+        .rank-4 .top .rank { font-size: 17px; }
+        .rank-4 .big-score { font-size: 20px; padding: 5px 0; }
+
+        /* --- Salespeople Section --- */
         .sales-section {
             background: #fff;
             border-radius: 12px;
@@ -140,15 +127,8 @@
             font-size: 14px;
             font-weight: 700;
         }
-        .section-bar .score {
-            font-size: 22px;
-            font-weight: 800;
-            color: #60a5fa;
-        }
-        .sales-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-        }
+        .section-bar .score { font-size: 22px; font-weight: 800; color: #60a5fa; }
+        .sales-grid { display: grid; grid-template-columns: 1fr 1fr; }
         .sp-row {
             display: flex;
             align-items: center;
@@ -169,11 +149,7 @@
             border-radius: 4px;
             min-width: 0;
         }
-        .sp-name:focus {
-            outline: none;
-            background: #eff6ff;
-            box-shadow: inset 0 0 0 1.5px #3b82f6;
-        }
+        .sp-name:focus { outline: none; background: #eff6ff; box-shadow: inset 0 0 0 1.5px #3b82f6; }
         .mini-input {
             width: 48px;
             border: 1px solid #d1d5db;
@@ -184,11 +160,7 @@
             font-family: inherit;
             color: #334155;
         }
-        .mini-input:focus {
-            outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 2px #3b82f633;
-        }
+        .mini-input:focus { outline: none; border-color: #3b82f6; box-shadow: 0 0 0 2px #3b82f633; }
         .add-btn {
             background: #2563eb;
             color: #fff;
@@ -209,8 +181,6 @@
             min-width: 24px;
             text-align: right;
         }
-
-        /* Service to Sales row */
         .sts-row {
             display: flex;
             align-items: center;
@@ -226,7 +196,7 @@
             font-weight: 600;
         }
 
-        /* ââ Group Total ââ */
+        /* --- Group Total --- */
         .group-total {
             background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
             border-radius: 12px;
@@ -279,7 +249,7 @@
     <div class="container" id="app"></div>
 
     <script>
-    var STORAGE_KEY = 'dd_leaderboard_v4';
+    var STORAGE_KEY = 'dd_leaderboard_v5';
 
     function defaultState() {
         return {
@@ -327,13 +297,28 @@
     function render() {
         var app = document.getElementById('app');
 
-        // Figure out podium order by score
+        // 4 teams for the podium
         var teams = [
             {key:'managers', name:'Sales Managers', pts: state.managers.points},
             {key:'bdc', name:'BDC', pts: state.bdc.points},
-            {key:'delivery', name:'Delivery', pts: state.delivery.points}
+            {key:'delivery', name:'Delivery', pts: state.delivery.points},
+            {key:'salespeople_total', name:'Salespeople', pts: getSalesTotal()}
         ];
 
+        // Sort by points descending to assign ranks
+        var sorted = teams.slice().sort(function(a,b){ return b.pts - a.pts; });
+
+        // Assign rank (1-4) to each team
+        sorted.forEach(function(t, i) { t.rank = i + 1; });
+
+        // Build a lookup by key
+        var rankMap = {};
+        sorted.forEach(function(t) { rankMap[t.key] = t; });
+
+        // Podium order: [3rd] [1st] [2nd] [4th] for mountain shape
+        var podiumOrder = [3, 1, 2, 4];
+
+        // Build salespeople rows
         var salesRows = '';
         state.salespeople.forEach(function(p,i) {
             salesRows += '<div class="sp-row">' +
@@ -344,23 +329,38 @@
                 '</div>';
         });
 
+        // Build podium cards in visual order
         var podiumCards = '';
-        var colors = ['p-gold','p-silver','p-bronze'];
-        teams.forEach(function(t, idx) {
-            podiumCards += '<div class="podium-card ' + colors[idx] + '">' +
-                '<div class="top">' +
-                    '<div class="rank">' + (idx === 0 ? '1st' : idx === 1 ? '2nd' : '3rd') + '</div>' +
-                    '<div class="team-name">' + t.name + '</div>' +
-                '</div>' +
-                '<div class="big-score" id="pod' + idx + '">' + t.pts + '</div>' +
-                '<div class="score-area">' +
+        var rankLabels = ['','1st','2nd','3rd','4th'];
+
+        podiumOrder.forEach(function(targetRank, posIdx) {
+            var t = sorted[targetRank - 1];
+            var isSalespeopleCard = (t.key === 'salespeople_total');
+
+            // Input area - salespeople card has no input (points come from individual entries)
+            var inputArea = '';
+            if (!isSalespeopleCard) {
+                inputArea = '<div class="score-area">' +
                     '<input id="' + t.key + 'Inp" placeholder="+/-">' +
                     '<button onclick="addPoints(\'' + t.key + '\',\'' + t.key + 'Inp\')">Add</button>' +
+                    '</div>';
+            } else {
+                inputArea = '<div class="score-area" style="padding:4px 10px;font-size:10px;color:#94a3b8;">from individual entries</div>';
+            }
+
+            podiumCards += '<div class="podium-card rank-' + t.rank + '" style="order:' + (posIdx + 1) + '">' +
+                '<div class="top">' +
+                    '<div class="rank">' + rankLabels[t.rank] + '</div>' +
+                    '<div class="team-name">' + t.name + '</div>' +
                 '</div>' +
+                '<div class="big-score" id="pod_' + t.key + '">' + t.pts + '</div>' +
+                inputArea +
                 '</div>';
         });
 
         app.innerHTML =
+            '<div class="podium-wrap">' + podiumCards + '</div>' +
+
             '<div class="sales-section">' +
                 '<div class="section-bar">' +
                     '<span>Partner Salespeople</span>' +
@@ -374,8 +374,6 @@
                     '<span class="pts" id="stsDisp">' + state.serviceToSales.points + '</span>' +
                 '</div>' +
             '</div>' +
-
-            '<div class="podium-wrap">' + podiumCards + '</div>' +
 
             '<div class="group-total">' +
                 '<span class="label">Group Total</span>' +
