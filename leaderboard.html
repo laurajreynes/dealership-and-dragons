@@ -1,327 +1,382 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dealership &amp; Dragons - Leaderboard</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #0F172A;
-      color: #E2E8F0;
-      min-height: 100vh;
-    }
-    header {
-      background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
-      border-bottom: 2px solid #F59E0B;
-      padding: 12px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    header h1 { font-size: 18px; color: #F59E0B; font-weight: 800; letter-spacing: 1px; }
-    header p { font-size: 11px; color: #94A3B8; margin-top: 2px; }
-    .back-link { color: #0891B2; text-decoration: none; font-size: 13px; font-weight: 600; }
-    .back-link:hover { text-decoration: underline; }
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 12px 16px 20px;
-    }
-    .section {
-      background: #1E293B;
-      border-radius: 10px;
-      margin-bottom: 10px;
-      overflow: hidden;
-      border: 1px solid #334155;
-    }
-    .section-header {
-      background: #334155;
-      padding: 8px 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .section-title { font-size: 14px; font-weight: 700; color: #F8FAFC; display: flex; align-items: center; gap: 6px; }
-    .section-title .icon { font-size: 16px; }
-    .section-total { font-size: 20px; font-weight: 800; color: #F59E0B; min-width: 50px; text-align: right; }
-    .sales-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0;
-    }
-    .sales-grid .team-row { border-right: 1px solid #262f3d; }
-    .sales-grid .team-row:nth-child(2n) { border-right: none; }
-    .team-row {
-      display: flex;
-      align-items: center;
-      padding: 6px 12px;
-      border-bottom: 1px solid #262f3d;
-      gap: 8px;
-    }
-    .team-row:last-child { border-bottom: none; }
-    .team-name { flex: 1; font-size: 13px; font-weight: 600; color: #CBD5E1; }
-    .team-name.editable {
-      background: transparent;
-      border: 1px dashed #475569;
-      border-radius: 4px;
-      padding: 3px 6px;
-      color: #CBD5E1;
-      font-size: 13px;
-      font-weight: 600;
-      font-family: inherit;
-      outline: none;
-      min-width: 0;
-    }
-    .team-name.editable:focus { border-color: #0891B2; background: #0F172A; }
-    .points-input {
-      width: 56px;
-      background: #0F172A;
-      border: 1px solid #475569;
-      border-radius: 4px;
-      padding: 4px 6px;
-      color: #E2E8F0;
-      font-size: 13px;
-      font-family: inherit;
-      text-align: center;
-      outline: none;
-    }
-    .points-input:focus { border-color: #F59E0B; }
-    .points-input::placeholder { color: #64748B; }
-    .add-btn {
-      background: #0891B2;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      padding: 4px 10px;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      font-family: inherit;
-      white-space: nowrap;
-    }
-    .add-btn:hover { background: #0E7490; }
-    .add-btn:active { transform: scale(0.97); }
-    .team-total { font-size: 16px; font-weight: 800; color: #F59E0B; min-width: 40px; text-align: right; }
-    .sts-row {
-      background: #1a2536;
-      border-top: 2px solid #334155;
-      padding: 8px 14px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .sts-label { font-size: 13px; font-weight: 700; color: #94A3B8; flex: 1; }
-    .bottom-sections {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-    .bottom-sections .section { margin-bottom: 0; }
-    .group-total-bar {
-      background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
-      border-radius: 10px;
-      padding: 14px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 10px;
-    }
-    .group-total-label { font-size: 18px; font-weight: 800; color: #0F172A; letter-spacing: 1px; }
-    .group-total-value { font-size: 32px; font-weight: 900; color: #0F172A; }
-    .reset-bar { text-align: center; }
-    .reset-btn {
-      background: #991B1B;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      padding: 6px 16px;
-      font-size: 12px;
-      font-weight: 700;
-      cursor: pointer;
-      font-family: inherit;
-    }
-    .reset-btn:hover { background: #7F1D1D; }
-    .flash { animation: flashGold 0.4s ease-out; }
-    @keyframes flashGold {
-      0% { color: #FDE68A; transform: scale(1.15); }
-      100% { color: #F59E0B; transform: scale(1); }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dealership &amp; Dragons &ndash; Leaderboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, 'system-ui', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #f9fafb;
+            color: #1f2937;
+            min-height: 100vh;
+        }
+
+        /* ââ Header ââ */
+        header {
+            background: #1f2937;
+            color: #fff;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        header h1 {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        header p {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 2px;
+        }
+        .back-link {
+            color: #60a5fa;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            transition: color 0.15s;
+        }
+        .back-link:hover { color: #93bbfd; }
+
+        /* ââ Traffic light bar ââ */
+        .status-bar {
+            background: linear-gradient(90deg, #1e3a5f 0%, #1f2937 100%);
+            padding: 6px 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .dot { width: 14px; height: 14px; border-radius: 50%; }
+        .dot.green { background: #22c55e; box-shadow: 0 0 6px #22c55e88; }
+        .dot.yellow { background: #eab308; box-shadow: 0 0 6px #eab30888; }
+        .dot.orange { background: #f97316; box-shadow: 0 0 6px #f9731688; }
+        .status-text { color: #d1d5db; font-size: 13px; font-weight: 500; margin-left: 4px; }
+
+        /* ââ Container ââ */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 16px 20px 20px;
+        }
+
+        /* ââ Section cards ââ */
+        .section {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+        .section-header {
+            background: #1f2937;
+            color: #fff;
+            padding: 8px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+        .section-header .emoji { margin-right: 6px; }
+        .section-header .total {
+            font-size: 20px;
+            font-weight: 700;
+            color: #60a5fa;
+        }
+
+        /* ââ Salespeople 2-col grid ââ */
+        .sales-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+        .sales-grid .person-row:nth-child(odd) { border-right: 1px solid #e5e7eb; }
+        .person-row {
+            display: flex;
+            align-items: center;
+            padding: 6px 12px;
+            border-bottom: 1px solid #f3f4f6;
+            gap: 8px;
+        }
+        .person-row:hover { background: #f9fafb; }
+        .person-name {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-size: 13px;
+            font-family: inherit;
+            color: #374151;
+            padding: 4px 6px;
+            border-radius: 4px;
+            min-width: 0;
+        }
+        .person-name:focus {
+            outline: none;
+            background: #eff6ff;
+            box-shadow: inset 0 0 0 1.5px #3b82f6;
+        }
+        .point-input {
+            width: 52px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 4px 6px;
+            font-size: 13px;
+            text-align: center;
+            font-family: inherit;
+            color: #374151;
+            background: #fff;
+            transition: border-color 0.15s;
+        }
+        .point-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px #3b82f633;
+        }
+        .add-btn {
+            background: #2563eb;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 4px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.15s;
+            white-space: nowrap;
+        }
+        .add-btn:hover { background: #1d4ed8; }
+        .add-btn:active { background: #1e40af; transform: scale(0.97); }
+        .points-display {
+            font-size: 15px;
+            font-weight: 700;
+            color: #1f2937;
+            min-width: 28px;
+            text-align: right;
+        }
+
+        /* ââ Service to Sales row ââ */
+        .sts-row {
+            display: flex;
+            align-items: center;
+            padding: 6px 12px;
+            background: #f0f9ff;
+            border-top: 1px solid #e0f2fe;
+            gap: 8px;
+        }
+        .sts-label {
+            flex: 1;
+            font-size: 13px;
+            color: #0369a1;
+            font-weight: 500;
+            padding-left: 6px;
+        }
+
+        /* ââ Bottom 3-col sections ââ */
+        .bottom-sections {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+        }
+        .bottom-sections .section { margin-bottom: 0; }
+        .bottom-sections .team-row {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            gap: 8px;
+        }
+        .bottom-sections .point-input { flex: 1; }
+
+        /* ââ Group Total ââ */
+        .group-total {
+            background: #1f2937;
+            border-radius: 10px;
+            padding: 14px 20px;
+            margin-top: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(31,41,55,0.25);
+        }
+        .group-total .label {
+            font-size: 15px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .group-total .value {
+            font-size: 28px;
+            font-weight: 800;
+            color: #60a5fa;
+        }
+
+        /* ââ Reset ââ */
+        .reset-wrap { text-align: center; margin-top: 14px; }
+        .reset-btn {
+            background: transparent;
+            color: #9ca3af;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 6px 18px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.15s;
+        }
+        .reset-btn:hover { background: #fef2f2; color: #dc2626; border-color: #fca5a5; }
+
+        /* ââ Animations ââ */
+        @keyframes pop { 0%{transform:scale(1)} 50%{transform:scale(1.25)} 100%{transform:scale(1)} }
+        .pop { animation: pop 0.25s ease; }
+    </style>
 </head>
 <body>
+    <header>
+        <div>
+            <h1>Fred Anderson Toyota of Cape Coral</h1>
+            <p>Dealership &amp; Dragons &ndash; Leaderboard</p>
+        </div>
+        <a href="index.html" class="back-link">&larr; Back to Sim</a>
+    </header>
+    <div class="status-bar">
+        <span class="dot green"></span>
+        <span class="dot yellow"></span>
+        <span class="dot orange"></span>
+        <span class="status-text">Track your points!</span>
+    </div>
 
-<header>
-  <div>
-    <h1>&#9876; DEALERSHIP &amp; DRAGONS</h1>
-    <p>Leaderboard - Fred Anderson Toyota of Cape Coral</p>
-  </div>
-  <a class="back-link" href="index.html">&#8592; Back to Sim</a>
-</header>
+    <div class="container" id="app"></div>
 
-<div class="container" id="app"></div>
+    <script>
+    const STORAGE_KEY = 'dd_leaderboard_v3';
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
+    function defaultState() {
+        return {
+            salespeople: Array.from({length:8}, (_,i) => ({name:'Salesperson '+(i+1), points:0})),
+            serviceToSales: {points:0},
+            managers: {points:0},
+            bdc: {points:0},
+            delivery: {points:0}
+        };
+    }
+    let state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || defaultState();
+    function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
 
-  var STORAGE_KEY = 'dd_leaderboard_v2';
+    function getSalesTotal() {
+        return state.salespeople.reduce((s,p) => s+p.points, 0) + state.serviceToSales.points;
+    }
+    function getGroupTotal() {
+        return getSalesTotal() + state.managers.points + state.bdc.points + state.delivery.points;
+    }
 
-  var defaultState = {
-    salespeople: [
-      { name: 'Salesperson 1', points: 0, log: [] },
-      { name: 'Salesperson 2', points: 0, log: [] },
-      { name: 'Salesperson 3', points: 0, log: [] },
-      { name: 'Salesperson 4', points: 0, log: [] },
-      { name: 'Salesperson 5', points: 0, log: [] },
-      { name: 'Salesperson 6', points: 0, log: [] },
-      { name: 'Salesperson 7', points: 0, log: [] },
-      { name: 'Salesperson 8', points: 0, log: [] }
-    ],
-    serviceToSales: { points: 0, log: [] },
-    managers: { points: 0, log: [] },
-    bdc: { points: 0, log: [] },
-    delivery: { points: 0, log: [] }
-  };
+    function addPoints(target, inputId) {
+        const inp = document.getElementById(inputId);
+        const val = parseFloat(inp.value);
+        if (isNaN(val)) return;
+        if (typeof target === 'number') {
+            state.salespeople[target].points += val;
+        } else {
+            state[target].points += val;
+        }
+        inp.value = '';
+        save(); render();
+    }
 
-  function loadState() {
-    try {
-      var raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) return JSON.parse(raw);
-    } catch(e) {}
-    return JSON.parse(JSON.stringify(defaultState));
-  }
+    function updateName(idx, val) {
+        state.salespeople[idx].name = val;
+        save();
+    }
 
-  function saveState() {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
-  }
+    function resetAll() {
+        if (!confirm('Reset all points to zero?')) return;
+        state = defaultState();
+        save(); render();
+    }
 
-  var state = loadState();
+    function render() {
+        const app = document.getElementById('app');
+        // Salespeople rows
+        let salesRows = '';
+        state.salespeople.forEach((p,i) => {
+            salesRows += `<div class="person-row">
+                <input class="person-name" value="${p.name.replace(/"/g,'&quot;')}" onchange="updateName(${i},this.value)">
+                <input class="point-input" id="sp${i}" placeholder="+/â">
+                <button class="add-btn" onclick="addPoints(${i},'sp${i}')">Add</button>
+                <span class="points-display" id="spd${i}">${p.points}</span>
+            </div>`;
+        });
 
-  function getSalesTotal() {
-    var t = state.serviceToSales.points;
-    for (var i = 0; i < state.salespeople.length; i++) t += state.salespeople[i].points;
-    return t;
-  }
+        app.innerHTML = `
+        <div class="section">
+            <div class="section-header">
+                <span><span class="emoji">âï¸</span> Partner Salespeople</span>
+                <span class="total" id="salesTotal">${getSalesTotal()}</span>
+            </div>
+            <div class="sales-grid">${salesRows}</div>
+            <div class="sts-row">
+                <span class="sts-label">ð Service to Sales</span>
+                <input class="point-input" id="stsInp" placeholder="+/â">
+                <button class="add-btn" onclick="addPoints('serviceToSales','stsInp')">Add</button>
+                <span class="points-display" id="stsDisp">${state.serviceToSales.points}</span>
+            </div>
+        </div>
 
-  function getGroupTotal() {
-    return getSalesTotal() + state.managers.points + state.bdc.points + state.delivery.points;
-  }
+        <div class="bottom-sections">
+            <div class="section">
+                <div class="section-header">
+                    <span><span class="emoji">ð</span> Sales Managers</span>
+                    <span class="total" id="mgrTotal">${state.managers.points}</span>
+                </div>
+                <div class="team-row">
+                    <input class="point-input" id="mgrInp" placeholder="+/â">
+                    <button class="add-btn" onclick="addPoints('managers','mgrInp')">Add</button>
+                </div>
+            </div>
+            <div class="section">
+                <div class="section-header">
+                    <span><span class="emoji">ð</span> BDC</span>
+                    <span class="total" id="bdcTotal">${state.bdc.points}</span>
+                </div>
+                <div class="team-row">
+                    <input class="point-input" id="bdcInp" placeholder="+/â">
+                    <button class="add-btn" onclick="addPoints('bdc','bdcInp')">Add</button>
+                </div>
+            </div>
+            <div class="section">
+                <div class="section-header">
+                    <span><span class="emoji">ð</span> Delivery</span>
+                    <span class="total" id="delTotal">${state.delivery.points}</span>
+                </div>
+                <div class="team-row">
+                    <input class="point-input" id="delInp" placeholder="+/â">
+                    <button class="add-btn" onclick="addPoints('delivery','delInp')">Add</button>
+                </div>
+            </div>
+        </div>
 
-  function timestamp() {
-    var d = new Date();
-    return (d.getMonth()+1) + '/' + d.getDate() + ' ' + d.getHours() + ':' + (d.getMinutes()<10?'0':'') + d.getMinutes();
-  }
+        <div class="group-total">
+            <span class="label">âï¸ Group Total</span>
+            <span class="value" id="groupTotal">${getGroupTotal()}</span>
+        </div>
 
-  function addPoints(target, inputId, totalId) {
-    var input = document.getElementById(inputId);
-    var val = parseFloat(input.value);
-    if (isNaN(val) || val === 0) { input.value = ''; return; }
-    target.points += val;
-    target.log.push({ val: val, time: timestamp() });
-    input.value = '';
-    saveState();
+        <div class="reset-wrap">
+            <button class="reset-btn" onclick="resetAll()">Reset All Points</button>
+        </div>`;
+
+        // Pop animation on totals
+        document.querySelectorAll('.total, .value').forEach(el => {
+            el.classList.add('pop');
+            el.addEventListener('animationend', () => el.classList.remove('pop'), {once:true});
+        });
+    }
+
     render();
-    var el = document.getElementById(totalId);
-    if (el) { el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); }
-  }
-
-  function renameSalesperson(idx, newName) {
-    state.salespeople[idx].name = newName || ('Salesperson ' + (idx+1));
-    saveState();
-  }
-
-  function resetAll() {
-    if (confirm('Reset ALL points to zero? This cannot be undone.')) {
-      state = JSON.parse(JSON.stringify(defaultState));
-      saveState();
-      render();
-    }
-  }
-
-  function render() {
-    var html = '';
-
-    // SALESPEOPLE SECTION with 2-column grid
-    html += '<div class="section">';
-    html += '<div class="section-header"><span class="section-title"><span class="icon">&#9876;</span> Partner Salespeople</span><span class="section-total" id="sales-total">' + getSalesTotal() + '</span></div>';
-    html += '<div class="sales-grid">';
-    for (var i = 0; i < state.salespeople.length; i++) {
-      var sp = state.salespeople[i];
-      html += '<div class="team-row">';
-      html += '<input class="team-name editable" value="' + sp.name.replace(/"/g, '&quot;') + '" data-sp-idx="' + i + '" onchange="window.__lb.renameSP(this)" />';
-      html += '<input class="points-input" id="sp-input-' + i + '" type="text" placeholder="+/-" onkeydown="if(event.key===\'Enter\')window.__lb.addSP(' + i + ')" />';
-      html += '<button class="add-btn" onclick="window.__lb.addSP(' + i + ')">Add</button>';
-      html += '<span class="team-total" id="sp-total-' + i + '">' + sp.points + '</span>';
-      html += '</div>';
-    }
-    html += '</div>';
-    // Service to Sales row at bottom of salespeople
-    html += '<div class="sts-row">';
-    html += '<span class="sts-label">&#128295; Service to Sales</span>';
-    html += '<input class="points-input" id="sts-input" type="text" placeholder="+/-" onkeydown="if(event.key===\'Enter\')window.__lb.addSTS()" />';
-    html += '<button class="add-btn" onclick="window.__lb.addSTS()">Add</button>';
-    html += '<span class="team-total" id="sts-total">' + state.serviceToSales.points + '</span>';
-    html += '</div>';
-    html += '</div>';
-
-    // BOTTOM ROW: Managers, BDC, Delivery side by side
-    html += '<div class="bottom-sections">';
-
-    // SALES MANAGERS
-    html += '<div class="section">';
-    html += '<div class="section-header"><span class="section-title"><span class="icon">&#127942;</span> Sales Managers</span><span class="section-total" id="mgr-total">' + state.managers.points + '</span></div>';
-    html += '<div class="team-row">';
-    html += '<input class="points-input" id="mgr-input" type="text" placeholder="+/-" onkeydown="if(event.key===\'Enter\')window.__lb.addMgr()" style="flex:1;" />';
-    html += '<button class="add-btn" onclick="window.__lb.addMgr()">Add</button>';
-    html += '</div>';
-    html += '</div>';
-
-    // BDC
-    html += '<div class="section">';
-    html += '<div class="section-header"><span class="section-title"><span class="icon">&#128222;</span> BDC</span><span class="section-total" id="bdc-total">' + state.bdc.points + '</span></div>';
-    html += '<div class="team-row">';
-    html += '<input class="points-input" id="bdc-input" type="text" placeholder="+/-" onkeydown="if(event.key===\'Enter\')window.__lb.addBDC()" style="flex:1;" />';
-    html += '<button class="add-btn" onclick="window.__lb.addBDC()">Add</button>';
-    html += '</div>';
-    html += '</div>';
-
-    // DELIVERY SPECIALIST
-    html += '<div class="section">';
-    html += '<div class="section-header"><span class="section-title"><span class="icon">&#128666;</span> Delivery</span><span class="section-total" id="del-total">' + state.delivery.points + '</span></div>';
-    html += '<div class="team-row">';
-    html += '<input class="points-input" id="del-input" type="text" placeholder="+/-" onkeydown="if(event.key===\'Enter\')window.__lb.addDel()" style="flex:1;" />';
-    html += '<button class="add-btn" onclick="window.__lb.addDel()">Add</button>';
-    html += '</div>';
-    html += '</div>';
-
-    html += '</div>'; // end bottom-sections
-
-    // GROUP TOTAL
-    html += '<div class="group-total-bar">';
-    html += '<span class="group-total-label">&#9876; GROUP TOTAL</span>';
-    html += '<span class="group-total-value" id="group-total">' + getGroupTotal() + '</span>';
-    html += '</div>';
-
-    // RESET
-    html += '<div class="reset-bar"><button class="reset-btn" onclick="window.__lb.resetAll()">Reset All Points</button></div>';
-
-    document.getElementById('app').innerHTML = html;
-  }
-
-  window.__lb = {
-    addSP: function(i) { addPoints(state.salespeople[i], 'sp-input-' + i, 'sp-total-' + i); },
-    addMgr: function() { addPoints(state.managers, 'mgr-input', 'mgr-total'); },
-    addBDC: function() { addPoints(state.bdc, 'bdc-input', 'bdc-total'); },
-    addSTS: function() { addPoints(state.serviceToSales, 'sts-input', 'sts-total'); },
-    addDel: function() { addPoints(state.delivery, 'del-input', 'del-total'); },
-    renameSP: function(el) { renameSalesperson(parseInt(el.dataset.spIdx), el.value); },
-    resetAll: resetAll
-  };
-
-  render();
-});
-</script>
+    </script>
 </body>
 </html>
