@@ -15,102 +15,74 @@
     header {
       background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
       border-bottom: 2px solid #F59E0B;
-      padding: 16px 24px;
+      padding: 12px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-    header h1 {
-      font-size: 20px;
-      color: #F59E0B;
-      font-weight: 800;
-      letter-spacing: 1px;
-    }
-    header p {
-      font-size: 12px;
-      color: #94A3B8;
-      margin-top: 2px;
-    }
-    .back-link {
-      color: #0891B2;
-      text-decoration: none;
-      font-size: 13px;
-      font-weight: 600;
-    }
+    header h1 { font-size: 18px; color: #F59E0B; font-weight: 800; letter-spacing: 1px; }
+    header p { font-size: 11px; color: #94A3B8; margin-top: 2px; }
+    .back-link { color: #0891B2; text-decoration: none; font-size: 13px; font-weight: 600; }
     .back-link:hover { text-decoration: underline; }
     .container {
-      max-width: 900px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 24px 16px 100px;
+      padding: 12px 16px 20px;
     }
     .section {
       background: #1E293B;
-      border-radius: 12px;
-      margin-bottom: 20px;
+      border-radius: 10px;
+      margin-bottom: 10px;
       overflow: hidden;
       border: 1px solid #334155;
     }
     .section-header {
       background: #334155;
-      padding: 12px 16px;
+      padding: 8px 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-    .section-title {
-      font-size: 16px;
-      font-weight: 700;
-      color: #F8FAFC;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    .section-title { font-size: 14px; font-weight: 700; color: #F8FAFC; display: flex; align-items: center; gap: 6px; }
+    .section-title .icon { font-size: 16px; }
+    .section-total { font-size: 20px; font-weight: 800; color: #F59E0B; min-width: 50px; text-align: right; }
+    .sales-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
     }
-    .section-title .icon { font-size: 20px; }
-    .section-total {
-      font-size: 22px;
-      font-weight: 800;
-      color: #F59E0B;
-      min-width: 60px;
-      text-align: right;
-    }
+    .sales-grid .team-row { border-right: 1px solid #262f3d; }
+    .sales-grid .team-row:nth-child(2n) { border-right: none; }
     .team-row {
       display: flex;
       align-items: center;
-      padding: 10px 16px;
+      padding: 6px 12px;
       border-bottom: 1px solid #262f3d;
-      gap: 12px;
+      gap: 8px;
     }
     .team-row:last-child { border-bottom: none; }
-    .team-name {
-      flex: 1;
-      font-size: 15px;
-      font-weight: 600;
-      color: #CBD5E1;
-    }
+    .team-name { flex: 1; font-size: 13px; font-weight: 600; color: #CBD5E1; }
     .team-name.editable {
       background: transparent;
       border: 1px dashed #475569;
-      border-radius: 6px;
-      padding: 4px 8px;
+      border-radius: 4px;
+      padding: 3px 6px;
       color: #CBD5E1;
-      font-size: 15px;
+      font-size: 13px;
       font-weight: 600;
       font-family: inherit;
       outline: none;
       min-width: 0;
     }
-    .team-name.editable:focus {
-      border-color: #0891B2;
-      background: #0F172A;
-    }
+    .team-name.editable:focus { border-color: #0891B2; background: #0F172A; }
     .points-input {
-      width: 80px;
+      width: 56px;
       background: #0F172A;
       border: 1px solid #475569;
-      border-radius: 6px;
-      padding: 6px 10px;
+      border-radius: 4px;
+      padding: 4px 6px;
       color: #E2E8F0;
-      font-size: 14px;
+      font-size: 13px;
       font-family: inherit;
       text-align: center;
       outline: none;
@@ -121,9 +93,9 @@
       background: #0891B2;
       color: white;
       border: none;
-      border-radius: 6px;
-      padding: 6px 14px;
-      font-size: 13px;
+      border-radius: 4px;
+      padding: 4px 10px;
+      font-size: 12px;
       font-weight: 700;
       cursor: pointer;
       font-family: inherit;
@@ -131,76 +103,52 @@
     }
     .add-btn:hover { background: #0E7490; }
     .add-btn:active { transform: scale(0.97); }
-    .team-total {
-      font-size: 18px;
-      font-weight: 800;
-      color: #F59E0B;
-      min-width: 50px;
-      text-align: right;
+    .team-total { font-size: 16px; font-weight: 800; color: #F59E0B; min-width: 40px; text-align: right; }
+    .sts-row {
+      background: #1a2536;
+      border-top: 2px solid #334155;
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
+    .sts-label { font-size: 13px; font-weight: 700; color: #94A3B8; flex: 1; }
+    .bottom-sections {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .bottom-sections .section { margin-bottom: 0; }
     .group-total-bar {
       background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
-      border-radius: 12px;
-      padding: 20px 24px;
+      border-radius: 10px;
+      padding: 14px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-top: 8px;
+      margin-bottom: 10px;
     }
-    .group-total-label {
-      font-size: 20px;
-      font-weight: 800;
-      color: #0F172A;
-      letter-spacing: 1px;
-    }
-    .group-total-value {
-      font-size: 36px;
-      font-weight: 900;
-      color: #0F172A;
-    }
-    .reset-bar {
-      text-align: center;
-      margin-top: 24px;
-    }
+    .group-total-label { font-size: 18px; font-weight: 800; color: #0F172A; letter-spacing: 1px; }
+    .group-total-value { font-size: 32px; font-weight: 900; color: #0F172A; }
+    .reset-bar { text-align: center; }
     .reset-btn {
       background: #991B1B;
       color: white;
       border: none;
       border-radius: 6px;
-      padding: 8px 20px;
-      font-size: 13px;
+      padding: 6px 16px;
+      font-size: 12px;
       font-weight: 700;
       cursor: pointer;
       font-family: inherit;
     }
     .reset-btn:hover { background: #7F1D1D; }
-    .flash {
-      animation: flashGold 0.4s ease-out;
-    }
+    .flash { animation: flashGold 0.4s ease-out; }
     @keyframes flashGold {
       0% { color: #FDE68A; transform: scale(1.15); }
       100% { color: #F59E0B; transform: scale(1); }
     }
-    .history-log {
-      font-size: 11px;
-      color: #64748B;
-      padding: 2px 16px 8px;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s;
-    }
-    .history-log.open { max-height: 200px; overflow-y: auto; }
-    .history-entry { padding: 2px 0; }
-    .history-toggle {
-      background: none;
-      border: none;
-      color: #64748B;
-      font-size: 11px;
-      cursor: pointer;
-      padding: 0 16px 6px;
-      font-family: inherit;
-    }
-    .history-toggle:hover { color: #94A3B8; }
   </style>
 </head>
 <body>
@@ -218,7 +166,7 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
 
-  var STORAGE_KEY = 'dd_leaderboard_v1';
+  var STORAGE_KEY = 'dd_leaderboard_v2';
 
   var defaultState = {
     salespeople: [
@@ -231,9 +179,9 @@ document.addEventListener('DOMContentLoaded', function() {
       { name: 'Salesperson 7', points: 0, log: [] },
       { name: 'Salesperson 8', points: 0, log: [] }
     ],
+    serviceToSales: { points: 0, log: [] },
     managers: { points: 0, log: [] },
     bdc: { points: 0, log: [] },
-    serviceToSales: { points: 0, log: [] },
     delivery: { points: 0, log: [] }
   };
 
@@ -252,13 +200,13 @@ document.addEventListener('DOMContentLoaded', function() {
   var state = loadState();
 
   function getSalesTotal() {
-    var t = 0;
+    var t = state.serviceToSales.points;
     for (var i = 0; i < state.salespeople.length; i++) t += state.salespeople[i].points;
     return t;
   }
 
   function getGroupTotal() {
-    return getSalesTotal() + state.managers.points + state.bdc.points + state.serviceToSales.points + state.delivery.points;
+    return getSalesTotal() + state.managers.points + state.bdc.points + state.delivery.points;
   }
 
   function timestamp() {
@@ -287,35 +235,18 @@ document.addEventListener('DOMContentLoaded', function() {
   function resetAll() {
     if (confirm('Reset ALL points to zero? This cannot be undone.')) {
       state = JSON.parse(JSON.stringify(defaultState));
-      // preserve custom names? No, full reset.
       saveState();
       render();
     }
   }
 
-  function toggleLog(id) {
-    var el = document.getElementById(id);
-    if (el) el.classList.toggle('open');
-  }
-
-  function buildLogHTML(log, id) {
-    if (!log || log.length === 0) return '';
-    var html = '<button class="history-toggle" onclick="window.__lb.toggleLog(\'' + id + '\')">' + log.length + ' entries &#9662;</button>';
-    html += '<div class="history-log" id="' + id + '">';
-    for (var i = log.length - 1; i >= 0; i--) {
-      var e = log[i];
-      html += '<div class="history-entry">' + e.time + ': ' + (e.val > 0 ? '+' : '') + e.val + '</div>';
-    }
-    html += '</div>';
-    return html;
-  }
-
   function render() {
     var html = '';
 
-    // SALESPEOPLE SECTION
+    // SALESPEOPLE SECTION with 2-column grid
     html += '<div class="section">';
     html += '<div class="section-header"><span class="section-title"><span class="icon">&#9876;</span> Partner Salespeople</span><span class="section-total" id="sales-total">' + getSalesTotal() + '</span></div>';
+    html += '<div class="sales-grid">';
     for (var i = 0; i < state.salespeople.length; i++) {
       var sp = state.salespeople[i];
       html += '<div class="team-row">';
@@ -324,53 +255,48 @@ document.addEventListener('DOMContentLoaded', function() {
       html += '<button class="add-btn" onclick="window.__lb.addSP(' + i + ')">Add</button>';
       html += '<span class="team-total" id="sp-total-' + i + '">' + sp.points + '</span>';
       html += '</div>';
-      html += buildLogHTML(sp.log, 'sp-log-' + i);
     }
     html += '</div>';
+    // Service to Sales row at bottom of salespeople
+    html += '<div class="sts-row">';
+    html += '<span class="sts-label">&#128295; Service to Sales</span>';
+    html += '<input class="points-input" id="sts-input" type="text" placeholder="+/-" onkeydown="if(event.key===\'Enter\')window.__lb.addSTS()" />';
+    html += '<button class="add-btn" onclick="window.__lb.addSTS()">Add</button>';
+    html += '<span class="team-total" id="sts-total">' + state.serviceToSales.points + '</span>';
+    html += '</div>';
+    html += '</div>';
+
+    // BOTTOM ROW: Managers, BDC, Delivery side by side
+    html += '<div class="bottom-sections">';
 
     // SALES MANAGERS
     html += '<div class="section">';
     html += '<div class="section-header"><span class="section-title"><span class="icon">&#127942;</span> Sales Managers</span><span class="section-total" id="mgr-total">' + state.managers.points + '</span></div>';
     html += '<div class="team-row">';
-    html += '<span class="team-name">Manager Team</span>';
-    html += '<input class="points-input" id="mgr-input" type="text" placeholder="+/-" onkeydown="if(event.key===\'Enter\')window.__lb.addMgr()" />';
+    html += '<input class="points-input" id="mgr-input" type="text" placeholder="+/-" onkeydown="if(event.key===\'Enter\')window.__lb.addMgr()" style="flex:1;" />';
     html += '<button class="add-btn" onclick="window.__lb.addMgr()">Add</button>';
     html += '</div>';
-    html += buildLogHTML(state.managers.log, 'mgr-log');
     html += '</div>';
 
     // BDC
     html += '<div class="section">';
     html += '<div class="section-header"><span class="section-title"><span class="icon">&#128222;</span> BDC</span><span class="section-total" id="bdc-total">' + state.bdc.points + '</span></div>';
     html += '<div class="team-row">';
-    html += '<span class="team-name">BDC Team</span>';
-    html += '<input class="points-input" id="bdc-input" type="text" placeholder="+/-" onkeydown="if(event.key===\'Enter\')window.__lb.addBDC()" />';
+    html += '<input class="points-input" id="bdc-input" type="text" placeholder="+/-" onkeydown="if(event.key===\'Enter\')window.__lb.addBDC()" style="flex:1;" />';
     html += '<button class="add-btn" onclick="window.__lb.addBDC()">Add</button>';
     html += '</div>';
-    html += buildLogHTML(state.bdc.log, 'bdc-log');
-    html += '</div>';
-
-    // SERVICE TO SALES
-    html += '<div class="section">';
-    html += '<div class="section-header"><span class="section-title"><span class="icon">&#128295;</span> Service to Sales</span><span class="section-total" id="sts-total">' + state.serviceToSales.points + '</span></div>';
-    html += '<div class="team-row">';
-    html += '<span class="team-name">Per Customer</span>';
-    html += '<input class="points-input" id="sts-input" type="text" placeholder="+/-" onkeydown="if(event.key===\'Enter\')window.__lb.addSTS()" />';
-    html += '<button class="add-btn" onclick="window.__lb.addSTS()">Add</button>';
-    html += '</div>';
-    html += buildLogHTML(state.serviceToSales.log, 'sts-log');
     html += '</div>';
 
     // DELIVERY SPECIALIST
     html += '<div class="section">';
-    html += '<div class="section-header"><span class="section-title"><span class="icon">&#128666;</span> Delivery Specialist</span><span class="section-total" id="del-total">' + state.delivery.points + '</span></div>';
+    html += '<div class="section-header"><span class="section-title"><span class="icon">&#128666;</span> Delivery</span><span class="section-total" id="del-total">' + state.delivery.points + '</span></div>';
     html += '<div class="team-row">';
-    html += '<span class="team-name">Per Delivery</span>';
-    html += '<input class="points-input" id="del-input" type="text" placeholder="+/-" onkeydown="if(event.key===\'Enter\')window.__lb.addDel()" />';
+    html += '<input class="points-input" id="del-input" type="text" placeholder="+/-" onkeydown="if(event.key===\'Enter\')window.__lb.addDel()" style="flex:1;" />';
     html += '<button class="add-btn" onclick="window.__lb.addDel()">Add</button>';
     html += '</div>';
-    html += buildLogHTML(state.delivery.log, 'del-log');
     html += '</div>';
+
+    html += '</div>'; // end bottom-sections
 
     // GROUP TOTAL
     html += '<div class="group-total-bar">';
@@ -391,8 +317,7 @@ document.addEventListener('DOMContentLoaded', function() {
     addSTS: function() { addPoints(state.serviceToSales, 'sts-input', 'sts-total'); },
     addDel: function() { addPoints(state.delivery, 'del-input', 'del-total'); },
     renameSP: function(el) { renameSalesperson(parseInt(el.dataset.spIdx), el.value); },
-    resetAll: resetAll,
-    toggleLog: toggleLog
+    resetAll: resetAll
   };
 
   render();
