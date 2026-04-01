@@ -3,135 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dealership &amp; Dragons &ndash; Leaderboard</title>
+    <title>Dealership &amp; Dragons - Leaderboard</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, 'system-ui', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: #f9fafb;
-            color: #1f2937;
+            background: #f1f5f9;
+            color: #1e293b;
             min-height: 100vh;
         }
 
-        /* ââ Header ââ */
         header {
             background: #1f2937;
             color: #fff;
-            padding: 12px 24px;
+            padding: 14px 28px;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
-        header h1 {
-            font-size: 18px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-        header p {
-            font-size: 12px;
-            color: #9ca3af;
-            margin-top: 2px;
-        }
+        header h1 { font-size: 18px; font-weight: 700; }
+        header p { font-size: 12px; color: #94a3b8; margin-top: 2px; }
         .back-link {
             color: #60a5fa;
             text-decoration: none;
             font-size: 13px;
             font-weight: 500;
-            transition: color 0.15s;
         }
-        .back-link:hover { color: #93bbfd; }
+        .back-link:hover { color: #93c5fd; }
 
-        /* ââ Traffic light bar ââ */
-        .status-bar {
-            background: linear-gradient(90deg, #1e3a5f 0%, #1f2937 100%);
-            padding: 6px 24px;
+        .container { max-width: 1100px; margin: 0 auto; padding: 20px 16px; }
+
+        /* ââ Podium ââ */
+        .podium-wrap {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding: 0 40px;
+        }
+        .podium-card {
+            flex: 1;
+            max-width: 220px;
+            text-align: center;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .podium-card:hover { transform: translateY(-2px); }
+        .podium-card .top {
+            padding: 16px 12px 12px;
+            color: #fff;
+        }
+        .podium-card .top .rank {
+            font-size: 28px;
+            font-weight: 800;
+            opacity: 0.9;
+            line-height: 1;
+        }
+        .podium-card .top .team-name {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 6px;
+        }
+        .podium-card .score-area {
+            background: #fff;
+            padding: 10px 12px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
+            justify-content: center;
         }
-        .dot { width: 14px; height: 14px; border-radius: 50%; }
-        .dot.green { background: #22c55e; box-shadow: 0 0 6px #22c55e88; }
-        .dot.yellow { background: #eab308; box-shadow: 0 0 6px #eab30888; }
-        .dot.orange { background: #f97316; box-shadow: 0 0 6px #f9731688; }
-        .status-text { color: #d1d5db; font-size: 13px; font-weight: 500; margin-left: 4px; }
-
-        /* ââ Container ââ */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 16px 20px 20px;
+        .podium-card .score-area input {
+            width: 60px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            padding: 5px 4px;
+            font-size: 13px;
+            text-align: center;
+            font-family: inherit;
         }
-
-        /* ââ Section cards ââ */
-        .section {
+        .podium-card .score-area input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px #3b82f633;
+        }
+        .podium-card .score-area button {
+            background: #2563eb;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 5px 10px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .podium-card .score-area button:hover { background: #1d4ed8; }
+        .podium-card .big-score {
+            font-size: 32px;
+            font-weight: 800;
+            color: #1e293b;
+            padding: 8px 0;
             background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
-            margin-bottom: 12px;
+        }
+
+        .p-gold .top { background: linear-gradient(135deg, #d97706, #f59e0b); }
+        .p-silver .top { background: linear-gradient(135deg, #475569, #64748b); }
+        .p-bronze .top { background: linear-gradient(135deg, #9a3412, #ea580c); }
+
+        .p-gold { order: 2; }
+        .p-silver { order: 1; }
+        .p-bronze { order: 3; }
+
+        .p-gold .top { padding-top: 24px; padding-bottom: 20px; }
+        .p-silver .top, .p-bronze .top { padding-top: 14px; padding-bottom: 14px; }
+
+        /* ââ Salespeople Section ââ */
+        .sales-section {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+            margin-bottom: 14px;
             overflow: hidden;
         }
-        .section-header {
-            background: #1f2937;
+        .section-bar {
+            background: #1e293b;
             color: #fff;
-            padding: 8px 16px;
+            padding: 10px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 0.3px;
-        }
-        .section-header .emoji { margin-right: 6px; }
-        .section-header .total {
-            font-size: 20px;
+            font-size: 14px;
             font-weight: 700;
+        }
+        .section-bar .score {
+            font-size: 22px;
+            font-weight: 800;
             color: #60a5fa;
         }
-
-        /* ââ Salespeople 2-col grid ââ */
         .sales-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 0;
         }
-        .sales-grid .person-row:nth-child(odd) { border-right: 1px solid #e5e7eb; }
-        .person-row {
+        .sp-row {
             display: flex;
             align-items: center;
-            padding: 6px 12px;
-            border-bottom: 1px solid #f3f4f6;
+            padding: 7px 14px;
             gap: 8px;
+            border-bottom: 1px solid #f1f5f9;
         }
-        .person-row:hover { background: #f9fafb; }
-        .person-name {
+        .sp-row:nth-child(odd) { border-right: 1px solid #f1f5f9; }
+        .sp-row:hover { background: #f8fafc; }
+        .sp-name {
             flex: 1;
             border: none;
             background: transparent;
             font-size: 13px;
             font-family: inherit;
-            color: #374151;
-            padding: 4px 6px;
+            color: #334155;
+            padding: 3px 4px;
             border-radius: 4px;
             min-width: 0;
         }
-        .person-name:focus {
+        .sp-name:focus {
             outline: none;
             background: #eff6ff;
             box-shadow: inset 0 0 0 1.5px #3b82f6;
         }
-        .point-input {
-            width: 52px;
+        .mini-input {
+            width: 48px;
             border: 1px solid #d1d5db;
-            border-radius: 6px;
-            padding: 4px 6px;
-            font-size: 13px;
+            border-radius: 5px;
+            padding: 3px 4px;
+            font-size: 12px;
             text-align: center;
             font-family: inherit;
-            color: #374151;
-            background: #fff;
-            transition: border-color 0.15s;
+            color: #334155;
         }
-        .point-input:focus {
+        .mini-input:focus {
             outline: none;
             border-color: #3b82f6;
             box-shadow: 0 0 0 2px #3b82f633;
@@ -140,99 +193,77 @@
             background: #2563eb;
             color: #fff;
             border: none;
-            border-radius: 6px;
-            padding: 4px 12px;
-            font-size: 12px;
+            border-radius: 5px;
+            padding: 3px 10px;
+            font-size: 11px;
             font-weight: 600;
             cursor: pointer;
             font-family: inherit;
-            transition: background 0.15s;
-            white-space: nowrap;
         }
         .add-btn:hover { background: #1d4ed8; }
-        .add-btn:active { background: #1e40af; transform: scale(0.97); }
-        .points-display {
-            font-size: 15px;
+        .add-btn:active { transform: scale(0.96); }
+        .pts {
+            font-size: 14px;
             font-weight: 700;
-            color: #1f2937;
-            min-width: 28px;
+            color: #1e293b;
+            min-width: 24px;
             text-align: right;
         }
 
-        /* ââ Service to Sales row ââ */
+        /* Service to Sales row */
         .sts-row {
             display: flex;
             align-items: center;
-            padding: 6px 12px;
-            background: #f0f9ff;
-            border-top: 1px solid #e0f2fe;
+            padding: 7px 14px;
+            background: #eff6ff;
+            border-top: 1px solid #dbeafe;
             gap: 8px;
         }
         .sts-label {
             flex: 1;
             font-size: 13px;
-            color: #0369a1;
-            font-weight: 500;
-            padding-left: 6px;
+            color: #1d4ed8;
+            font-weight: 600;
         }
-
-        /* ââ Bottom 3-col sections ââ */
-        .bottom-sections {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 12px;
-        }
-        .bottom-sections .section { margin-bottom: 0; }
-        .bottom-sections .team-row {
-            display: flex;
-            align-items: center;
-            padding: 8px 12px;
-            gap: 8px;
-        }
-        .bottom-sections .point-input { flex: 1; }
 
         /* ââ Group Total ââ */
         .group-total {
-            background: #1f2937;
-            border-radius: 10px;
-            padding: 14px 20px;
-            margin-top: 12px;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            border-radius: 12px;
+            padding: 16px 24px;
+            margin-top: 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 12px rgba(31,41,55,0.25);
+            box-shadow: 0 4px 12px rgba(30,41,59,0.3);
         }
         .group-total .label {
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 800;
             color: #fff;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
         }
         .group-total .value {
-            font-size: 28px;
+            font-size: 36px;
             font-weight: 800;
             color: #60a5fa;
         }
 
-        /* ââ Reset ââ */
-        .reset-wrap { text-align: center; margin-top: 14px; }
+        .reset-wrap { text-align: center; margin-top: 16px; }
         .reset-btn {
             background: transparent;
-            color: #9ca3af;
-            border: 1px solid #d1d5db;
+            color: #94a3b8;
+            border: 1px solid #cbd5e1;
             border-radius: 6px;
-            padding: 6px 18px;
+            padding: 6px 20px;
             font-size: 12px;
-            font-weight: 500;
             cursor: pointer;
             font-family: inherit;
-            transition: all 0.15s;
         }
         .reset-btn:hover { background: #fef2f2; color: #dc2626; border-color: #fca5a5; }
 
-        /* ââ Animations ââ */
-        @keyframes pop { 0%{transform:scale(1)} 50%{transform:scale(1.25)} 100%{transform:scale(1)} }
+        @keyframes pop { 0%{transform:scale(1)} 50%{transform:scale(1.15)} 100%{transform:scale(1)} }
         .pop { animation: pop 0.25s ease; }
     </style>
 </head>
@@ -240,44 +271,38 @@
     <header>
         <div>
             <h1>Fred Anderson Toyota of Cape Coral</h1>
-            <p>Dealership &amp; Dragons &ndash; Leaderboard</p>
+            <p>Dealership &amp; Dragons - Leaderboard</p>
         </div>
-        <a href="index.html" class="back-link">&larr; Back to Sim</a>
+        <a href="index.html" class="back-link">&#8592; Back to Sim</a>
     </header>
-    <div class="status-bar">
-        <span class="dot green"></span>
-        <span class="dot yellow"></span>
-        <span class="dot orange"></span>
-        <span class="status-text">Track your points!</span>
-    </div>
 
     <div class="container" id="app"></div>
 
     <script>
-    const STORAGE_KEY = 'dd_leaderboard_v3';
+    var STORAGE_KEY = 'dd_leaderboard_v4';
 
     function defaultState() {
         return {
-            salespeople: Array.from({length:8}, (_,i) => ({name:'Salesperson '+(i+1), points:0})),
+            salespeople: Array.from({length:8}, function(_,i) { return {name:'Salesperson '+(i+1), points:0}; }),
             serviceToSales: {points:0},
             managers: {points:0},
             bdc: {points:0},
             delivery: {points:0}
         };
     }
-    let state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || defaultState();
+    var state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || defaultState();
     function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
 
     function getSalesTotal() {
-        return state.salespeople.reduce((s,p) => s+p.points, 0) + state.serviceToSales.points;
+        return state.salespeople.reduce(function(s,p){ return s+p.points; }, 0) + state.serviceToSales.points;
     }
     function getGroupTotal() {
         return getSalesTotal() + state.managers.points + state.bdc.points + state.delivery.points;
     }
 
     function addPoints(target, inputId) {
-        const inp = document.getElementById(inputId);
-        const val = parseFloat(inp.value);
+        var inp = document.getElementById(inputId);
+        var val = parseFloat(inp.value);
         if (isNaN(val)) return;
         if (typeof target === 'number') {
             state.salespeople[target].points += val;
@@ -300,79 +325,70 @@
     }
 
     function render() {
-        const app = document.getElementById('app');
-        // Salespeople rows
-        let salesRows = '';
-        state.salespeople.forEach((p,i) => {
-            salesRows += `<div class="person-row">
-                <input class="person-name" value="${p.name.replace(/"/g,'&quot;')}" onchange="updateName(${i},this.value)">
-                <input class="point-input" id="sp${i}" placeholder="+/â">
-                <button class="add-btn" onclick="addPoints(${i},'sp${i}')">Add</button>
-                <span class="points-display" id="spd${i}">${p.points}</span>
-            </div>`;
+        var app = document.getElementById('app');
+
+        // Figure out podium order by score
+        var teams = [
+            {key:'managers', name:'Sales Managers', pts: state.managers.points},
+            {key:'bdc', name:'BDC', pts: state.bdc.points},
+            {key:'delivery', name:'Delivery', pts: state.delivery.points}
+        ];
+
+        var salesRows = '';
+        state.salespeople.forEach(function(p,i) {
+            salesRows += '<div class="sp-row">' +
+                '<input class="sp-name" value="' + p.name.replace(/"/g,'&quot;') + '" onchange="updateName(' + i + ',this.value)">' +
+                '<input class="mini-input" id="sp' + i + '" placeholder="+/-">' +
+                '<button class="add-btn" onclick="addPoints(' + i + ',\'sp' + i + '\')">Add</button>' +
+                '<span class="pts" id="spd' + i + '">' + p.points + '</span>' +
+                '</div>';
         });
 
-        app.innerHTML = `
-        <div class="section">
-            <div class="section-header">
-                <span><span class="emoji">âï¸</span> Partner Salespeople</span>
-                <span class="total" id="salesTotal">${getSalesTotal()}</span>
-            </div>
-            <div class="sales-grid">${salesRows}</div>
-            <div class="sts-row">
-                <span class="sts-label">ð Service to Sales</span>
-                <input class="point-input" id="stsInp" placeholder="+/â">
-                <button class="add-btn" onclick="addPoints('serviceToSales','stsInp')">Add</button>
-                <span class="points-display" id="stsDisp">${state.serviceToSales.points}</span>
-            </div>
-        </div>
+        var podiumCards = '';
+        var colors = ['p-gold','p-silver','p-bronze'];
+        teams.forEach(function(t, idx) {
+            podiumCards += '<div class="podium-card ' + colors[idx] + '">' +
+                '<div class="top">' +
+                    '<div class="rank">' + (idx === 0 ? '1st' : idx === 1 ? '2nd' : '3rd') + '</div>' +
+                    '<div class="team-name">' + t.name + '</div>' +
+                '</div>' +
+                '<div class="big-score" id="pod' + idx + '">' + t.pts + '</div>' +
+                '<div class="score-area">' +
+                    '<input id="' + t.key + 'Inp" placeholder="+/-">' +
+                    '<button onclick="addPoints(\'' + t.key + '\',\'' + t.key + 'Inp\')">Add</button>' +
+                '</div>' +
+                '</div>';
+        });
 
-        <div class="bottom-sections">
-            <div class="section">
-                <div class="section-header">
-                    <span><span class="emoji">ð</span> Sales Managers</span>
-                    <span class="total" id="mgrTotal">${state.managers.points}</span>
-                </div>
-                <div class="team-row">
-                    <input class="point-input" id="mgrInp" placeholder="+/â">
-                    <button class="add-btn" onclick="addPoints('managers','mgrInp')">Add</button>
-                </div>
-            </div>
-            <div class="section">
-                <div class="section-header">
-                    <span><span class="emoji">ð</span> BDC</span>
-                    <span class="total" id="bdcTotal">${state.bdc.points}</span>
-                </div>
-                <div class="team-row">
-                    <input class="point-input" id="bdcInp" placeholder="+/â">
-                    <button class="add-btn" onclick="addPoints('bdc','bdcInp')">Add</button>
-                </div>
-            </div>
-            <div class="section">
-                <div class="section-header">
-                    <span><span class="emoji">ð</span> Delivery</span>
-                    <span class="total" id="delTotal">${state.delivery.points}</span>
-                </div>
-                <div class="team-row">
-                    <input class="point-input" id="delInp" placeholder="+/â">
-                    <button class="add-btn" onclick="addPoints('delivery','delInp')">Add</button>
-                </div>
-            </div>
-        </div>
+        app.innerHTML =
+            '<div class="sales-section">' +
+                '<div class="section-bar">' +
+                    '<span>Partner Salespeople</span>' +
+                    '<span class="score" id="salesTotal">' + getSalesTotal() + '</span>' +
+                '</div>' +
+                '<div class="sales-grid">' + salesRows + '</div>' +
+                '<div class="sts-row">' +
+                    '<span class="sts-label">Service to Sales</span>' +
+                    '<input class="mini-input" id="stsInp" placeholder="+/-">' +
+                    '<button class="add-btn" onclick="addPoints(\'serviceToSales\',\'stsInp\')">Add</button>' +
+                    '<span class="pts" id="stsDisp">' + state.serviceToSales.points + '</span>' +
+                '</div>' +
+            '</div>' +
 
-        <div class="group-total">
-            <span class="label">âï¸ Group Total</span>
-            <span class="value" id="groupTotal">${getGroupTotal()}</span>
-        </div>
+            '<div class="podium-wrap">' + podiumCards + '</div>' +
 
-        <div class="reset-wrap">
-            <button class="reset-btn" onclick="resetAll()">Reset All Points</button>
-        </div>`;
+            '<div class="group-total">' +
+                '<span class="label">Group Total</span>' +
+                '<span class="value" id="groupTotal">' + getGroupTotal() + '</span>' +
+            '</div>' +
 
-        // Pop animation on totals
-        document.querySelectorAll('.total, .value').forEach(el => {
+            '<div class="reset-wrap">' +
+                '<button class="reset-btn" onclick="resetAll()">Reset All Points</button>' +
+            '</div>';
+
+        document.querySelectorAll('.score, .big-score, .value').forEach(function(el) {
             el.classList.add('pop');
-            el.addEventListener('animationend', () => el.classList.remove('pop'), {once:true});
+            el.addEventListener('animationend', function() { el.classList.remove('pop'); }, {once:true});
         });
     }
 
