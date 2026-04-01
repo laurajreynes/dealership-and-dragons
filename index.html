@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dealership & Dragons - Caller Mission Control</title>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
   <style>
     * {
       margin: 0;
@@ -656,6 +658,11 @@
       <h3>Completed Calls</h3>
       <div class="completed-list" id="completed-list"></div>
     </div>
+    <div class="modal-section" style="border-top:2px solid #fee2e2;padding-top:16px;margin-top:16px;">
+      <h3 style="color:#dc2626;">Reset Board</h3>
+      <p style="font-size:13px;color:#6b7280;margin:4px 0 10px;">Clear all claims and feedback for ALL users. Use between training sessions.</p>
+      <button onclick="app.resetBoard()" style="background:#dc2626;color:#fff;border:none;border-radius:6px;padding:8px 20px;font-size:14px;font-weight:600;cursor:pointer;">Reset All Claims</button>
+    </div>
   </div>
 </div>
 
@@ -668,6 +675,21 @@
 </div>
 
 <script>
+/* --- Firebase Setup --- */
+var firebaseConfig = {
+  apiKey: "AIzaSyA5CY-XsabMC9Aq28z5nEjIXTQAaTOBycI",
+  authDomain: "discovery-game.firebaseapp.com",
+  databaseURL: "https://discovery-game-default-rtdb.firebaseio.com",
+  projectId: "discovery-game",
+  storageBucket: "discovery-game.firebasestorage.app",
+  messagingSenderId: "822879206356",
+  appId: "1:822879206356:web:7a61a96a1cfc37e344f441"
+};
+firebase.initializeApp(firebaseConfig);
+var db = firebase.database();
+var cardsRef = db.ref('dd/cards');
+var _syncing = false;
+
 document.addEventListener('DOMContentLoaded', function() {
   app.init();
 });
@@ -683,9 +705,39 @@ var app = {
 
   init: function() {
     this.generateCards();
-    this.shuffle(this.cards);
+    // No shuffle - deterministic order so Firebase indices match across all browsers
     this.render();
     this.showDirections();
+    this.startFirebaseSync();
+  },
+
+  startFirebaseSync: function() {
+    var self = this;
+    cardsRef.on('value', function(snapshot) {
+      var data = snapshot.val();
+      if (!data) return;
+      _syncing = true;
+      Object.keys(data).forEach(function(idx) {
+        var i = parseInt(idx);
+        if (i >= 0 && i < self.cards.length) {
+          if (data[idx].status) {
+            self.cards[i].status = data[idx].status;
+          }
+          if (data[idx].feedback) {
+            self.cards[i].feedback = data[idx].feedback;
+          }
+        }
+      });
+      // Rebuild completed list from synced data
+      self.completed = [];
+      self.cards.forEach(function(card) {
+        if (card.status === 'done') {
+          self.completed.push({ title: card.title, feedback: card.feedback || 'None' });
+        }
+      });
+      self.render();
+      _syncing = false;
+    });
   },
 
   generateCards: function() {
@@ -708,7 +760,7 @@ var app = {
       { tab: 'inbound', title: 'Calling about the 2023 Hyundai Palisade (Stk#PU607483P)', desc: 'Considering brand switch. Saw it listed. Wants details.', questions: 'Ask: "What is the warranty?" or "What are safety features?"', appt: false },
       { tab: 'inbound', title: 'Interested in the 2024 Camry SE (Stk#TS294883A)', desc: 'Saw online. Wants to know if it is still available.', questions: 'Ask: "Is it still available?" or "What is the final price?"', appt: true },
       { tab: 'inbound', title: 'Calling about the 2025 Corolla (Stk#TB002089B)', desc: 'College student. Wants affordable reliable transportation.', questions: 'Ask: "Do you have financing for recent grads?" or "What is monthly payment?"', appt: false },
-      { tab: 'inbound', title: 'Interested in the 2024 Tundra (Stk#TL009984A)', desc: 'Work truck buyer. Wants towing capacity information.', questions: 'Ask: "What is max towing?" or "Can I tow a 5000 lb boat?"', appt: false },
+      { tab: 'inbound', title: 'Interested in the 2024 Tundra (Stk#QL009984A)', desc: 'Work truck buyer. Wants towing capacity information.', questions: 'Ask: "What is max towing?" or "Can I tow a 5000 lb boat?"', appt: false },
       { tab: 'inbound', title: 'Calling about the 2025 Camry LE (Stk#SX042668P)', desc: 'Current Camry owner wants upgrade. Saw online. Trade-in question.', questions: 'Ask: "What is my trade worth?" or "What is upgrade cost?"', appt: false },
       { tab: 'inbound', title: 'Interested in the 2023 RAV4 XLE (Stk#PR045821P)', desc: 'Wants safety ratings. Saw on website.', questions: 'Ask: "What safety score?" or "Does it have lane departure warning?"', appt: false },
       { tab: 'inbound', title: 'Calling about the 2024 Highlander XLE (Stk#RH067432P)', desc: 'Family of five wants three-row SUV. Saw online.', questions: 'Ask: "Does it have third row?" or "What is seating capacity?"', appt: false },
@@ -1040,6 +1092,7 @@ var app = {
     this.cards[idx].status = 'claimed';
     this.claimTimes.push(Date.now());
     if (this.autoMode) { this.autoUpdatePacing(); }
+    cardsRef.child(idx).set({ status: 'claimed', feedback: '' });
     this.render();
   },
 
@@ -1049,11 +1102,13 @@ var app = {
       title: this.cards[idx].title,
       feedback: this.cards[idx].feedback || 'None'
     });
+    cardsRef.child(idx).set({ status: 'done', feedback: this.cards[idx].feedback || '' });
     this.render();
   },
 
   setFeedback: function(idx, type) {
     this.cards[idx].feedback = type;
+    cardsRef.child(idx).update({ feedback: type });
     this.render();
   },
 
@@ -1161,6 +1216,21 @@ var app = {
 
   closeDirections: function() {
     document.getElementById('directions').classList.remove('active');
+  },
+
+  resetBoard: function() {
+    if (!confirm('Reset ALL claims and feedback for EVERY user? This cannot be undone.')) return;
+    cardsRef.remove();
+    this.cards.forEach(function(card) {
+      delete card.status;
+      delete card.feedback;
+    });
+    this.completed = [];
+    this.claimTimes = [];
+    this.pacingState = 'green';
+    this.updateTrafficLight();
+    this.render();
+    this.closeDashboard();
   }
 };
 </script>
