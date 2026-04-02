@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Dealership &amp; Dragons - Leaderboard</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -11,33 +11,51 @@
             background: #f1f5f9;
             color: #1e293b;
             min-height: 100vh;
+            -webkit-text-size-adjust: 100%;
         }
         header {
             background: #1f2937;
             color: #fff;
-            padding: 14px 28px;
+            padding: 14px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
-        header h1 { font-size: 18px; font-weight: 700; }
-        header p { font-size: 12px; color: #94a3b8; margin-top: 2px; }
-        .back-link { color: #60a5fa; text-decoration: none; font-size: 13px; font-weight: 500; }
+        header h1 { font-size: 16px; font-weight: 700; }
+        header p { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+        .back-link { color: #60a5fa; text-decoration: none; font-size: 13px; font-weight: 500; white-space: nowrap; margin-left: 12px; }
         .back-link:hover { color: #93c5fd; }
-        .container { max-width: 1100px; margin: 0 auto; padding: 20px 16px; }
+        .container { max-width: 600px; margin: 0 auto; padding: 16px 12px; }
+
+        .sync-badge {
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        .sync-badge span {
+            display: inline-block;
+            background: #dcfce7;
+            color: #166534;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+        .sync-badge.offline span {
+            background: #fef2f2;
+            color: #991b1b;
+        }
 
         /* --- Podium --- */
         .podium-wrap {
             display: flex;
             justify-content: center;
             align-items: flex-end;
-            gap: 10px;
-            margin-bottom: 20px;
-            padding: 0 20px;
+            gap: 8px;
+            margin-bottom: 16px;
         }
         .podium-card {
             flex: 1;
-            max-width: 200px;
+            max-width: 160px;
             text-align: center;
             border-radius: 12px;
             overflow: hidden;
@@ -53,21 +71,22 @@
             justify-content: flex-end;
         }
         .podium-card .top .rank { font-weight: 800; opacity: 0.9; line-height: 1; }
-        .podium-card .top .team-name { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; }
+        .podium-card .top .team-name { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+        .podium-card .big-score { font-weight: 800; color: #1e293b; background: #fff; }
         .podium-card .score-area {
             background: #fff;
-            padding: 8px 10px;
+            padding: 6px 8px;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
             justify-content: center;
         }
         .podium-card .score-area input {
-            width: 52px;
+            width: 44px;
             border: 1px solid #d1d5db;
             border-radius: 6px;
-            padding: 4px;
-            font-size: 12px;
+            padding: 5px 2px;
+            font-size: 13px;
             text-align: center;
             font-family: inherit;
         }
@@ -77,39 +96,32 @@
             color: #fff;
             border: none;
             border-radius: 6px;
-            padding: 4px 9px;
-            font-size: 11px;
+            padding: 5px 10px;
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
             font-family: inherit;
         }
         .podium-card .score-area button:hover { background: #1d4ed8; }
-        .podium-card .big-score { font-weight: 800; color: #1e293b; background: #fff; }
 
         /* Rank colors */
         .rank-1 .top { background: linear-gradient(135deg, #d97706, #f59e0b); }
         .rank-2 .top { background: linear-gradient(135deg, #475569, #64748b); }
         .rank-3 .top { background: linear-gradient(135deg, #9a3412, #ea580c); }
-        .rank-4 .top { background: linear-gradient(135deg, #1e40af, #3b82f6); }
 
-        /* Dynamic sizing per rank */
-        .rank-1 .top { padding: 28px 10px 18px; }
-        .rank-1 .top .rank { font-size: 30px; }
-        .rank-1 .big-score { font-size: 34px; padding: 10px 0; }
+        .rank-1 .top { padding: 24px 8px 14px; }
+        .rank-1 .top .rank { font-size: 26px; }
+        .rank-1 .big-score { font-size: 30px; padding: 8px 0; }
 
-        .rank-2 .top { padding: 20px 10px 14px; }
-        .rank-2 .top .rank { font-size: 24px; }
-        .rank-2 .big-score { font-size: 28px; padding: 8px 0; }
+        .rank-2 .top { padding: 18px 8px 12px; }
+        .rank-2 .top .rank { font-size: 22px; }
+        .rank-2 .big-score { font-size: 24px; padding: 6px 0; }
 
-        .rank-3 .top { padding: 14px 10px 10px; }
-        .rank-3 .top .rank { font-size: 20px; }
-        .rank-3 .big-score { font-size: 24px; padding: 6px 0; }
+        .rank-3 .top { padding: 12px 8px 10px; }
+        .rank-3 .top .rank { font-size: 18px; }
+        .rank-3 .big-score { font-size: 20px; padding: 5px 0; }
 
-        .rank-4 .top { padding: 10px 10px 8px; }
-        .rank-4 .top .rank { font-size: 17px; }
-        .rank-4 .big-score { font-size: 20px; padding: 5px 0; }
-
-        /* --- Salespeople Section --- */
+        /* --- Sales Team Section --- */
         .sales-section {
             background: #fff;
             border-radius: 12px;
@@ -128,34 +140,42 @@
             font-weight: 700;
         }
         .section-bar .score { font-size: 22px; font-weight: 800; color: #60a5fa; }
-        .sales-grid { display: grid; grid-template-columns: 1fr 1fr; }
+
         .sp-row {
             display: flex;
             align-items: center;
-            padding: 7px 14px;
+            padding: 8px 12px;
             gap: 8px;
             border-bottom: 1px solid #f1f5f9;
         }
-        .sp-row:nth-child(odd) { border-right: 1px solid #f1f5f9; }
+        .sp-row:last-child { border-bottom: none; }
         .sp-row:hover { background: #f8fafc; }
+        .sp-num {
+            font-size: 12px;
+            font-weight: 700;
+            color: #94a3b8;
+            min-width: 20px;
+            text-align: center;
+        }
         .sp-name {
             flex: 1;
-            border: none;
-            background: transparent;
-            font-size: 13px;
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+            font-size: 14px;
             font-family: inherit;
             color: #334155;
-            padding: 3px 4px;
-            border-radius: 4px;
+            padding: 6px 8px;
+            border-radius: 6px;
             min-width: 0;
         }
-        .sp-name:focus { outline: none; background: #eff6ff; box-shadow: inset 0 0 0 1.5px #3b82f6; }
+        .sp-name:focus { outline: none; background: #eff6ff; border-color: #3b82f6; box-shadow: 0 0 0 2px #3b82f633; }
+        .sp-name::placeholder { color: #cbd5e1; }
         .mini-input {
-            width: 48px;
+            width: 50px;
             border: 1px solid #d1d5db;
-            border-radius: 5px;
-            padding: 3px 4px;
-            font-size: 12px;
+            border-radius: 6px;
+            padding: 6px 4px;
+            font-size: 13px;
             text-align: center;
             font-family: inherit;
             color: #334155;
@@ -165,42 +185,29 @@
             background: #2563eb;
             color: #fff;
             border: none;
-            border-radius: 5px;
-            padding: 3px 10px;
-            font-size: 11px;
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
             font-family: inherit;
+            white-space: nowrap;
         }
         .add-btn:hover { background: #1d4ed8; }
         .add-btn:active { transform: scale(0.96); }
         .pts {
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 700;
             color: #1e293b;
-            min-width: 24px;
+            min-width: 30px;
             text-align: right;
-        }
-        .sts-row {
-            display: flex;
-            align-items: center;
-            padding: 7px 14px;
-            background: #eff6ff;
-            border-top: 1px solid #dbeafe;
-            gap: 8px;
-        }
-        .sts-label {
-            flex: 1;
-            font-size: 13px;
-            color: #1d4ed8;
-            font-weight: 600;
         }
 
         /* --- Group Total --- */
         .group-total {
             background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
             border-radius: 12px;
-            padding: 16px 24px;
+            padding: 16px 20px;
             margin-top: 16px;
             display: flex;
             justify-content: space-between;
@@ -208,26 +215,26 @@
             box-shadow: 0 4px 12px rgba(30,41,59,0.3);
         }
         .group-total .label {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 800;
             color: #fff;
             letter-spacing: 1.5px;
             text-transform: uppercase;
         }
         .group-total .value {
-            font-size: 36px;
+            font-size: 32px;
             font-weight: 800;
             color: #60a5fa;
         }
 
-        .reset-wrap { text-align: center; margin-top: 16px; }
+        .reset-wrap { text-align: center; margin-top: 16px; padding-bottom: 24px; }
         .reset-btn {
             background: transparent;
             color: #94a3b8;
             border: 1px solid #cbd5e1;
             border-radius: 6px;
-            padding: 6px 20px;
-            font-size: 12px;
+            padding: 8px 24px;
+            font-size: 13px;
             cursor: pointer;
             font-family: inherit;
         }
@@ -235,6 +242,26 @@
 
         @keyframes pop { 0%{transform:scale(1)} 50%{transform:scale(1.15)} 100%{transform:scale(1)} }
         .pop { animation: pop 0.25s ease; }
+
+        /* --- Mobile tweaks --- */
+        @media (max-width: 480px) {
+            header { padding: 12px 14px; }
+            header h1 { font-size: 14px; }
+            .container { padding: 12px 8px; }
+            .podium-wrap { gap: 5px; }
+            .podium-card .top .team-name { font-size: 9px; }
+            .podium-card .score-area input { width: 38px; font-size: 12px; padding: 4px 2px; }
+            .podium-card .score-area button { padding: 4px 8px; font-size: 11px; }
+            .rank-1 .big-score { font-size: 24px; }
+            .rank-2 .big-score { font-size: 20px; }
+            .rank-3 .big-score { font-size: 18px; }
+            .sp-row { padding: 8px 10px; gap: 6px; }
+            .sp-name { font-size: 13px; padding: 5px 6px; }
+            .mini-input { width: 44px; font-size: 12px; padding: 5px 2px; }
+            .pts { font-size: 15px; min-width: 26px; }
+            .group-total { padding: 14px 16px; }
+            .group-total .value { font-size: 28px; }
+        }
     </style>
 </head>
 <body>
@@ -246,28 +273,105 @@
         <a href="index.html" class="back-link">&#8592; Back to Sim</a>
     </header>
 
-    <div class="container" id="app"></div>
+    <div class="container">
+        <div class="sync-badge" id="syncBadge"><span>Connecting...</span></div>
+        <div id="app"></div>
+    </div>
+
+    <!-- Firebase SDK (same as main app) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 
     <script>
-    var STORAGE_KEY = 'dd_leaderboard_v5';
+    // Firebase init - same project as main simulation
+    firebase.initializeApp({
+        apiKey: "AIzaSyDummyKeyNotNeededForRTDB",
+        databaseURL: "https://discovery-game-default-rtdb.firebaseio.com",
+        projectId: "discovery-game"
+    });
+
+    var db = firebase.database();
+    var ref = db.ref('dd/leaderboard');
+    var connected = false;
 
     function defaultState() {
         return {
-            salespeople: Array.from({length:8}, function(_,i) { return {name:'Salesperson '+(i+1), points:0}; }),
-            serviceToSales: {points:0},
+            salespeople: Array.from({length:9}, function(_,i) { return {name:'', points:0}; }),
             managers: {points:0},
             bdc: {points:0},
             delivery: {points:0}
         };
     }
-    var state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || defaultState();
-    function save() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
 
+    var state = defaultState();
+    var debounceTimer = null;
+
+    // --- Firebase sync ---
+    function saveToFirebase() {
+        ref.set(state);
+    }
+
+    function debouncedSave() {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(saveToFirebase, 300);
+    }
+
+    // Listen for real-time changes from any device
+    ref.on('value', function(snapshot) {
+        var data = snapshot.val();
+        if (data) {
+            state = data;
+            // Ensure salespeople is an array with at least 9 slots
+            if (!state.salespeople || !Array.isArray(state.salespeople)) {
+                // Firebase may store arrays as objects with numeric keys
+                if (state.salespeople && typeof state.salespeople === 'object') {
+                    var arr = [];
+                    var keys = Object.keys(state.salespeople);
+                    keys.forEach(function(k) { arr[parseInt(k)] = state.salespeople[k]; });
+                    state.salespeople = arr;
+                } else {
+                    state.salespeople = defaultState().salespeople;
+                }
+            }
+            while (state.salespeople.length < 9) {
+                state.salespeople.push({name:'', points:0});
+            }
+            // Fill any null/undefined slots
+            for (var i = 0; i < state.salespeople.length; i++) {
+                if (!state.salespeople[i]) state.salespeople[i] = {name:'', points:0};
+            }
+            if (!state.managers) state.managers = {points:0};
+            if (!state.bdc) state.bdc = {points:0};
+            if (!state.delivery) state.delivery = {points:0};
+        }
+        connected = true;
+        updateSyncBadge();
+        render();
+    });
+
+    // Connection state
+    db.ref('.info/connected').on('value', function(snap) {
+        connected = snap.val() === true;
+        updateSyncBadge();
+    });
+
+    function updateSyncBadge() {
+        var badge = document.getElementById('syncBadge');
+        if (connected) {
+            badge.className = 'sync-badge';
+            badge.innerHTML = '<span>&#9679; Live &mdash; synced across all devices</span>';
+        } else {
+            badge.className = 'sync-badge offline';
+            badge.innerHTML = '<span>&#9679; Offline &mdash; reconnecting...</span>';
+        }
+    }
+
+    // --- Points & Names ---
     function getSalesTotal() {
-        return state.salespeople.reduce(function(s,p){ return s+p.points; }, 0) + state.serviceToSales.points;
+        return state.salespeople.reduce(function(s,p){ return s + (p.points || 0); }, 0);
     }
     function getGroupTotal() {
-        return getSalesTotal() + state.managers.points + state.bdc.points + state.delivery.points;
+        return getSalesTotal() + (state.managers.points||0) + (state.bdc.points||0) + (state.delivery.points||0);
     }
 
     function addPoints(target, inputId) {
@@ -275,86 +379,79 @@
         var val = parseFloat(inp.value);
         if (isNaN(val)) return;
         if (typeof target === 'number') {
-            state.salespeople[target].points += val;
+            state.salespeople[target].points = (state.salespeople[target].points || 0) + val;
         } else {
-            state[target].points += val;
+            state[target].points = (state[target].points || 0) + val;
         }
         inp.value = '';
-        save(); render();
+        debouncedSave();
+        render();
     }
 
     function updateName(idx, val) {
         state.salespeople[idx].name = val;
-        save();
+        debouncedSave();
+    }
+
+    function handleInputKey(e, target, inputId) {
+        if (e.key === 'Enter') {
+            addPoints(target, inputId);
+        }
     }
 
     function resetAll() {
-        if (!confirm('Reset all points to zero?')) return;
+        if (!confirm('Reset ALL points and names to zero? This affects all devices.')) return;
         state = defaultState();
-        save(); render();
+        saveToFirebase();
+        render();
     }
 
+    // --- Render ---
     function render() {
         var app = document.getElementById('app');
 
-        // 4 teams for the podium
+        // 3 teams for the podium
         var teams = [
-            {key:'managers', name:'Sales Managers', pts: state.managers.points},
-            {key:'bdc', name:'BDC', pts: state.bdc.points},
-            {key:'delivery', name:'Delivery', pts: state.delivery.points},
-            {key:'salespeople_total', name:'Salespeople', pts: getSalesTotal()}
+            {key:'managers', name:'Sales Managers', pts: state.managers.points || 0},
+            {key:'bdc', name:'BDC', pts: state.bdc.points || 0},
+            {key:'delivery', name:'Delivery', pts: state.delivery.points || 0}
         ];
 
-        // Sort by points descending to assign ranks
         var sorted = teams.slice().sort(function(a,b){ return b.pts - a.pts; });
-
-        // Assign rank (1-4) to each team
         sorted.forEach(function(t, i) { t.rank = i + 1; });
 
-        // Build a lookup by key
-        var rankMap = {};
-        sorted.forEach(function(t) { rankMap[t.key] = t; });
+        // Podium order: [2nd] [1st] [3rd]
+        var podiumOrder = [2, 1, 3];
+        var rankLabels = ['','1st','2nd','3rd'];
 
-        // Podium order: [3rd] [1st] [2nd] [4th] for mountain shape
-        var podiumOrder = [3, 1, 2, 4];
-
-        // Build salespeople rows
-        var salesRows = '';
-        state.salespeople.forEach(function(p,i) {
-            salesRows += '<div class="sp-row">' +
-                '<input class="sp-name" value="' + p.name.replace(/"/g,'&quot;') + '" onchange="updateName(' + i + ',this.value)">' +
-                '<input class="mini-input" id="sp' + i + '" placeholder="+/-">' +
-                '<button class="add-btn" onclick="addPoints(' + i + ',\'sp' + i + '\')">Add</button>' +
-                '<span class="pts" id="spd' + i + '">' + p.points + '</span>' +
-                '</div>';
-        });
-
-        // Build podium cards in visual order
         var podiumCards = '';
-        var rankLabels = ['','1st','2nd','3rd','4th'];
-
         podiumOrder.forEach(function(targetRank, posIdx) {
             var t = sorted[targetRank - 1];
-            var isSalespeopleCard = (t.key === 'salespeople_total');
-
-            // Input area - salespeople card has no input (points come from individual entries)
-            var inputArea = '';
-            if (!isSalespeopleCard) {
-                inputArea = '<div class="score-area">' +
-                    '<input id="' + t.key + 'Inp" placeholder="+/-">' +
-                    '<button onclick="addPoints(\'' + t.key + '\',\'' + t.key + 'Inp\')">Add</button>' +
-                    '</div>';
-            } else {
-                inputArea = '<div class="score-area" style="padding:4px 10px;font-size:10px;color:#94a3b8;">from individual entries</div>';
-            }
+            var inputArea = '<div class="score-area">' +
+                '<input id="' + t.key + 'Inp" placeholder="+/-" inputmode="numeric" onkeydown="handleInputKey(event,\'' + t.key + '\',\'' + t.key + 'Inp\')">' +
+                '<button onclick="addPoints(\'' + t.key + '\',\'' + t.key + 'Inp\')">Add</button>' +
+                '</div>';
 
             podiumCards += '<div class="podium-card rank-' + t.rank + '" style="order:' + (posIdx + 1) + '">' +
                 '<div class="top">' +
                     '<div class="rank">' + rankLabels[t.rank] + '</div>' +
                     '<div class="team-name">' + t.name + '</div>' +
                 '</div>' +
-                '<div class="big-score" id="pod_' + t.key + '">' + t.pts + '</div>' +
+                '<div class="big-score">' + t.pts + '</div>' +
                 inputArea +
+                '</div>';
+        });
+
+        // Salespeople rows
+        var salesRows = '';
+        state.salespeople.forEach(function(p, i) {
+            var displayName = (p.name || '').replace(/"/g, '&quot;');
+            salesRows += '<div class="sp-row">' +
+                '<span class="sp-num">' + (i+1) + '</span>' +
+                '<input class="sp-name" value="' + displayName + '" placeholder="Team Member ' + (i+1) + '" onchange="updateName(' + i + ',this.value)">' +
+                '<input class="mini-input" id="sp' + i + '" placeholder="+/-" inputmode="numeric" onkeydown="handleInputKey(event,' + i + ',\'sp' + i + '\')">' +
+                '<button class="add-btn" onclick="addPoints(' + i + ',\'sp' + i + '\')">Add</button>' +
+                '<span class="pts">' + (p.points || 0) + '</span>' +
                 '</div>';
         });
 
@@ -363,27 +460,22 @@
 
             '<div class="sales-section">' +
                 '<div class="section-bar">' +
-                    '<span>Partner Salespeople</span>' +
-                    '<span class="score" id="salesTotal">' + getSalesTotal() + '</span>' +
+                    '<span>Sales Team</span>' +
+                    '<span class="score">' + getSalesTotal() + '</span>' +
                 '</div>' +
-                '<div class="sales-grid">' + salesRows + '</div>' +
-                '<div class="sts-row">' +
-                    '<span class="sts-label">Service to Sales</span>' +
-                    '<input class="mini-input" id="stsInp" placeholder="+/-">' +
-                    '<button class="add-btn" onclick="addPoints(\'serviceToSales\',\'stsInp\')">Add</button>' +
-                    '<span class="pts" id="stsDisp">' + state.serviceToSales.points + '</span>' +
-                '</div>' +
+                salesRows +
             '</div>' +
 
             '<div class="group-total">' +
                 '<span class="label">Group Total</span>' +
-                '<span class="value" id="groupTotal">' + getGroupTotal() + '</span>' +
+                '<span class="value">' + getGroupTotal() + '</span>' +
             '</div>' +
 
             '<div class="reset-wrap">' +
                 '<button class="reset-btn" onclick="resetAll()">Reset All Points</button>' +
             '</div>';
 
+        // Pop animation
         document.querySelectorAll('.score, .big-score, .value').forEach(function(el) {
             el.classList.add('pop');
             el.addEventListener('animationend', function() { el.classList.remove('pop'); }, {once:true});
